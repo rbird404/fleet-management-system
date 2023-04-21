@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+legacy/
+AUTO_test_*
+MENU_CH_test_*
+db.sqlite3
+.vscode
+.idea
+ear*

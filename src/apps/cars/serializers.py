@@ -1,11 +1,11 @@
 from collections import OrderedDict
 from rest_framework import serializers
-from django.db import models
-from apps.cars.models import *
+from django.db import models  # TODO: Лишний
+from apps.cars.models import *  # TODO: Лучше без звёздочек
 
 
 class CarTypeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)
+    id = serializers.IntegerField(required=False)  # TODO: id есть по дефоту
 
     class Meta:
         model = CarType
@@ -181,6 +181,7 @@ class CarDetailSerializer(serializers.ModelSerializer):
         required=False, allow_null=True
     )
 
+    # TODO: сделать статичным
     def _get_or_create(
         self, model: models.Model, data: dict | None
     ) -> models.Model | None:
@@ -198,7 +199,7 @@ class CarDetailSerializer(serializers.ModelSerializer):
 
         return model.objects.create(**data)
 
-    def create(self, validated_data: dict):
+    def create(self, validated_data: dict):  # TODO: Похоже, будто то же самое сделается из коробки
         nested_fields = {}
         fields = self.get_fields()
         for field, value in validated_data.items():

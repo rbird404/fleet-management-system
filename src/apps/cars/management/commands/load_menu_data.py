@@ -38,7 +38,7 @@ class Command(BaseCommand):
             next(reader)
             for row in reader:
                 for model in self.models:
-                    if model.CSV_CODE == row[0] and row[1] != "":
+                    if model.CSV_CODE == row[0] and row[1] != "":  # TODO: Опять же маппинг, так как тут Magick Number
                         model.objects.create(
                             name=row[2],
                             code=row[0] + row[1],

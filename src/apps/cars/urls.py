@@ -20,6 +20,6 @@ router.register("distributions", DistributionView, basename="distributions")
 router.register("waybills", WaybillView, basename="waybills")
 router.register("engines", EngineView, basename="engines")
 router.register("structures", StructureView, basename="structures")
-router.register("", CarView, basename='cars')
+router.register("", CarView, basename='cars')  # TODO: Не совсем в духе REST
 
 urlpatterns = router.urls

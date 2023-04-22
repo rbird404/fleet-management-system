@@ -1,9 +1,12 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
+# TODO: Файл большой, при желание можно преобразовать в Python модуль
 
 
 class CarType(models.Model):
     CSV_CODE = "A"
+    # TODO: Если есть возможность сверь ограничения (max_length) с ТЗ или старым кодом,
+    # TODO: если оно взято из головы
     name = models.CharField(max_length=128)
     code = models.CharField(max_length=2, null=True, blank=True)
 
@@ -12,7 +15,7 @@ class CarType(models.Model):
 
     class Meta:
         verbose_name = "Тип транспортного средства"
-        verbose_name_plural = "Типы Транспортных средств"
+        verbose_name_plural = "Типы транспортных средств"
 
 
 class Manufacturer(models.Model):
@@ -80,7 +83,7 @@ class GasolineBrand(models.Model):
         verbose_name_plural = "Марки бензина"
 
 
-class CarClass(models.Model):
+class CarClass(models.Model):  # TODO: Не очень уверен в нейминге
     CSV_CODE = "F"
     name = models.CharField(max_length=128)
     code = models.CharField(max_length=2, null=True, blank=True)
@@ -119,42 +122,6 @@ class MaintenanceService(models.Model):
         verbose_name_plural = "Службы эксплутации автомобиля"
 
 
-class Structure(models.Model):
-    code = models.CharField(max_length=4, unique=True)
-    name = models.CharField(
-        max_length=35,
-        null=True, blank=True,
-        verbose_name="Название Подразделения"
-    )
-    phone = models.CharField(
-        max_length=10,
-        null=True, blank=True,
-        verbose_name="Телефон"
-    )
-    chief = models.CharField(
-        max_length=35,
-        null=True, blank=True,
-        verbose_name="Начальник Подразделения"
-    )
-    percent_city = models.IntegerField(
-        validators=[MaxValueValidator(99)],
-        null=True, blank=True,
-        verbose_name="Процент города"
-    )
-    parent = models.ForeignKey(
-        "self",
-        null=True,
-        on_delete=models.CASCADE
-    )
-
-    def __str__(self) -> str:
-        return self.name
-
-    class Meta:
-        verbose_name = "Подразделение-владелец транспорта"
-        verbose_name_plural = "Подразделения-владельцы транспорта"
-
-
 class Source(models.Model):
     CSV_CODE = "I"
     name = models.CharField(
@@ -183,6 +150,46 @@ class Warehouse(models.Model):
         verbose_name = "Склад"
         verbose_name_plural = "Склады"
 
+# TODO: Все модели выше можно вынести в абстрактную модель
+
+
+class Structure(models.Model):
+    code = models.CharField(max_length=4, unique=True)
+    name = models.CharField(
+        max_length=35,
+        null=True, blank=True,
+        verbose_name="Название Подразделения"
+    )
+    phone = models.CharField(
+        max_length=10,  # TODO: Лучше поднять ограничения или добавить валидацию формата
+        null=True, blank=True,
+        verbose_name="Телефон"
+    )
+    chief = models.CharField(
+        max_length=35,
+        null=True, blank=True,
+        verbose_name="Начальник Подразделения"
+    )
+    percent_city = models.IntegerField(
+        validators=[MaxValueValidator(99)],
+        null=True, blank=True,
+        verbose_name="Процент города"
+    )
+
+    # TODO: С такими полями лучше поаккуратнее быть, может вызывать потери производительности
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        verbose_name = "Подразделение-владелец транспорта"
+        verbose_name_plural = "Подразделения-владельцы транспорта"
+
 
 class Engine(models.Model):
     number = models.CharField(
@@ -199,7 +206,7 @@ class Engine(models.Model):
     )
     power = models.IntegerField(
         verbose_name="Мощность двигателя т/c",
-        validators=[MaxValueValidator(999)],
+        validators=[MaxValueValidator(999)],  # TODO: Есть двигатели мощнее, лучше поднять
         null=True,
         blank=True
     )
@@ -355,19 +362,20 @@ class Car(models.Model):
         null=True,
         blank=True
     )
-    sign = models.CharField(
+    gov_number = models.CharField(  # TODO: подумай как лучше переименовать
+        "sign",
         verbose_name="Номер государственной регистрации",
         max_length=16,
         null=True,
         blank=True
     )
-    sign1 = models.CharField(
+    sign1 = models.CharField(  # TODO: подумай как лучше переименовать
         verbose_name="Реестровый номер",
         max_length=16,
         null=True,
         blank=True
     )
-    sign2 = models.CharField(
+    sign2 = models.CharField(  # TODO: подумай как лучше переименовать
         verbose_name="Дубль 2",
         max_length=16,
         null=True,
@@ -527,7 +535,7 @@ class Car(models.Model):
         blank=True
     )
     trust_date = models.DateField(
-        verbose_name="Дата действия страхавого полиса",
+        verbose_name="Дата действия страхового полиса",
         null=True,
         blank=True
     )

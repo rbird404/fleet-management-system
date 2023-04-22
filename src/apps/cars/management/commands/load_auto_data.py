@@ -1,13 +1,14 @@
 from django.core.management.base import BaseCommand
 from datetime import datetime
+from datetime import date
 from decimal import Decimal, InvalidOperation
 import csv
 from configs.settings import DATA_PATH
-from apps.cars.models import *
+from apps.cars.models import *  # TODO: Не используй, лучше импорты со звёздочками
 
 
 class Command(BaseCommand):
-    def _get_or_none(self, model, **kwargs):
+    def _get_or_none(self, model, **kwargs):  # TODO: Если пишешь тайпинги, то пиши везде
         result = None
         try:
             result = model.objects.get(**kwargs)
@@ -16,30 +17,39 @@ class Command(BaseCommand):
 
         return result
 
-    def _parse_date(self, date: str) -> datetime | None:
-        try:
+    def _parse_date(self, date: str) -> date | None:
+        if date:
             return datetime.strptime(date, "%d.%m.%Y").date()
-        except ValueError:
-            return None
+        return None
 
     def _parse_decimal(self, numeric: str) -> Decimal | None:
         numeric.replace(",", ".")
-        try:
+        try:  # TODO: Я бы сделал обработку ошибок через if
+            # TODO: Канонически try-except делается на обработку действий пользователя,
+            # TODO: а if на проверки (
+            # TODO:      деление двух чисел с input() проверка try-except,
+            # TODO:      но если оба от кода пришли, то if-ом
+            # TODO: )
+            # TODO: Плюс хороший if работает быстрее
+
+
             return Decimal(numeric)
         except InvalidOperation:
             return None
 
     def _parse_int(self, number: str) -> int | None:
-        try:
+        if number.isdigit():
             return int(number)
-        except ValueError:
-            return None
+        return None
 
     def handle(self, *args, **options):
         with open(DATA_PATH / 'AUTO.csv', newline='') as auto:
             reader = csv.reader(auto, delimiter=',')
-            next(reader)
+            next(reader)  # TODO: Это для пропуска первой строки?
+
             for row in reader:
+                # TODO: Это крайне сложно понять, лучше разбить на кусочки
+                # TODO: Про маппинг говорил, просто напоминаю
                 type_ = self._get_or_none(CarType, code=row[1])
                 manufacturer = self._get_or_none(Manufacturer, code=row[2])
                 brand = self._get_or_none(Brand, code=row[3])
@@ -81,6 +91,10 @@ class Command(BaseCommand):
 
                 climate_control = self._parse_int(row[45])
                 if climate_control:
+                    # TODO: Данные не видел, но bool вообще не факт, что будет
+                    # TODO: парсить строку так как ты скорее всего ожидаешь
+                    # TODO: Например: bool("False") => True
+                    # TODO: Второе: if, возможно, лишний
                     climate_control = bool(climate_control)
 
                 engine_mark = row[43]

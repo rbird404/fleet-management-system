@@ -1,5 +1,4 @@
 import csv
-from django.core.management.base import BaseCommand
 from configs.settings import DATA_PATH
 from apps.cars.models import (
     CarType,
@@ -16,29 +15,29 @@ from apps.cars.models import (
 )
 
 
-class Command(BaseCommand):
+class LoadMenuData:
 
-    models = [
-        CarType,
-        Manufacturer,
-        Brand,
-        CarBody,
-        CarGroup,
-        GasolineBrand,
-        CarClass,
-        Color,
-        MaintenanceService,
-        Source,
-        Warehouse,
-    ]
+    mapping = {
+        "A": CarType,
+        "C": Manufacturer,
+        "B": Brand,
+        "D": CarBody,
+        "E": CarGroup,
+        "c": GasolineBrand,
+        "F": CarClass,
+        "G": Color,
+        "H": MaintenanceService,
+        "I": Source,
+        "j": Warehouse,
+    }
 
-    def handle(self, *args, **options):
+    def execute(self, *args, **options):
         with open(DATA_PATH / 'MENU.csv', newline='') as file:
             reader = csv.reader(file, delimiter=',')
             next(reader)
             for row in reader:
-                for model in self.models:
-                    if model.CSV_CODE == row[0] and row[1] != "":
+                for code, model in self.mapping.items():
+                    if code == row[0] and row[1] != "":
                         model.objects.create(
                             name=row[2],
                             code=row[0] + row[1],

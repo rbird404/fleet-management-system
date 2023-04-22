@@ -13,92 +13,92 @@ from cars.models import (
 
 
 class Command(BaseCommand):
-    mapping_csv_colum = {
-        0: {
-            'field': 'inventory_number',
+    mapping_fields = {
+        'inventory_number': {
+            'row_index': 0,
             'type': int
         },
-        9: {
-            'field': 'year',
+        'year': {
+            'row_index': 9,
             'type': int
         },
-        6: {
-            'field': 'chass_number',
+        'chass_number': {
+            'row_index': 6,
             'type': str
         },
-        12: {
-            'field': 'gov_number',
+        'gov_number': {
+            'row_index': 12,
             'type': str
         },
-        13: {
-            'field': 'register_number',
+        'register_number': {
+            'row_index': 13,
             'type': str
         },
-        15: {
-            'field': 'sign_date',
+        'sign_date': {
+            'row_index': 15,
             'type': date
         },
-        16: {
-            'field': 'exploitation_date',
+        'exploitation_date': {
+            'row_index': 16,
             'type': date
         },
-        47: {
-            'field': 'base_rate',
+        'base_rate': {
+            'row_index': 47,
             'type': Decimal,
         },
-        48: {
-            'field': 'identifier_fuel_rate',
+        'identifier_fuel_rate': {
+            'row_index': 48,
             'type': Decimal
         },
-        26: {
-            'field': 'source_number',
+        'source_number': {
+            'row_index': 26,
             'type': str
         },
-        27: {
-            'field': 'source_date',
+        'source_date': {
+            'row_index': 27,
             'type': date
         },
-        33: {
-            'field': 'transfer_date',
+        'transfer_date': {
+            'row_index': 33,
             'type': date
         },
-        45: {
-            'field': 'climate_control',
+        'climate_control': {
+            'row_index': 45,
             'type': bool
         },
-        35: {
-            'field': 'mileage_rate',
+        'mileage_rate': {
+            'row_index': 35,
             'type': Decimal
         },
-        36: {
-            'field': 'fuel_rate',
+        'fuel_rate': {
+            'row_index': 36,
             'type': Decimal
         },
-        40: {
-            'field': 'id_number',
+        'id_number': {
+            'row_index': 40,
             'type': str
         },
-        49: {
-            'field': 'category',
+        'category': {
+            'row_index': 49,
             'type': str
         },
-        50: {
-            'field': 'trust_date',
+        'trust_date': {
+            'row_index': 50,
             'type': date
         },
-        51: {
-            'field': 'to_date',
+        'to_date': {
+            'row_index': 51,
             'type': date
         },
-        22: {
-            'field': 'cost',
+        'cost': {
+            'row_index': 22,
             'type': Decimal
         }
     }
 
-    mapping_relation = {
+    mapping_relational_fields = {
         'engine': {
-            "fields": {
+            'fields': {
                 'number': {
                     'row_index': 7,
                     'type': int,
@@ -116,10 +116,10 @@ class Command(BaseCommand):
                     'type': Decimal
                 }
             },
-            "model": Engine
+            'model': Engine
         },
         'passport': {
-            "fields": {
+            'fields': {
                 'number': {
                     'row_index': 10,
                     'type': str,
@@ -129,10 +129,10 @@ class Command(BaseCommand):
                     'type': date,
                 }
             },
-            "model": Passport
+            'model': Passport
         },
         'distribution': {
-            "fields": {
+            'fields': {
                 'number': {
                     'row_index': 31,
                     'type': str,
@@ -142,10 +142,10 @@ class Command(BaseCommand):
                     'type': date,
                 }
             },
-            "model": Distribution
+            'model': Distribution
         },
         'waybill': {
-            "fields": {
+            'fields': {
                 'number': {
                     'row_index': 29,
                     'type': str,
@@ -155,115 +155,115 @@ class Command(BaseCommand):
                     'type': date,
                 }
             },
-            "model": Waybill
+            'model': Waybill
         },
         'type': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 1,
                     'type': str,
                 }
             },
-            "model": CarType
+            'model': CarType
         },
         'manufacturer': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 2,
                     'type': str,
                 }
             },
-            "model": Manufacturer
+            'model': Manufacturer
         },
         'brand': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 3,
                     'type': str,
                 }
             },
-            "model": Brand
+            'model': Brand
         },
         'body': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 4,
                     'type': str,
                 }
             },
-            "model": CarBody
+            'model': CarBody
         },
         'group': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 5,
                     'type': str,
                 }
             },
-            "model": CarGroup
+            'model': CarGroup
         },
         'car_class': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 17,
                     'type': str,
                 }
             },
-            "model": CarClass
+            'model': CarClass
         },
         'color': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 18,
                     'type': str,
                 }
             },
-            "model": Color
+            'model': Color
         },
         'source': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 25,
                     'type': str,
                 }
             },
-            "model": Source
+            'model': Source
         },
         'warehouse': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 28,
                     'type': str,
                 }
             },
-            "model": Warehouse
+            'model': Warehouse
         },
         'gasoline_brand': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 42,
                     'type': str,
                 }
             },
-            "model": GasolineBrand
+            'model': GasolineBrand
         },
         'service': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 19,
                     'type': str,
                 }
             },
-            "model": MaintenanceService
+            'model': MaintenanceService
         },
         'subdivision': {
-            "fields": {
+            'fields': {
                 'code': {
                     'row_index': 20,
                     'type': str,
                 }
             },
-            "model": Subdivision
+            'model': Subdivision
         }
     }
     _one_to_one_models = (Engine, Distribution, Waybill, Passport)
@@ -278,11 +278,11 @@ class Command(BaseCommand):
 
     def _parse_date(self, date: str) -> date | None:
         if date:
-            return datetime.strptime(date, "%d.%m.%Y").date()
+            return datetime.strptime(date, '%d.%m.%Y').date()
         return None
 
     def _parse_decimal(self, numeric: str) -> Decimal | None:
-        numeric.replace(",", ".")
+        numeric.replace(',', '.')
         try:
             return Decimal(numeric)
         except InvalidOperation:
@@ -295,7 +295,7 @@ class Command(BaseCommand):
         return None
 
     def _parse_column(
-        self, type_: str | int | Decimal | date, value: str
+        self, type_: str | int | Decimal | date | bool, value: str
     ) -> str | int | Decimal | date | None:
         if type_ == int:
             return self._parse_int(value)
@@ -314,13 +314,12 @@ class Command(BaseCommand):
             next(reader)
             for row in reader:
                 car_values = {}
-                for index, data in self.mapping_csv_colum.items():
-                    value: str = row[index]
-                    type_: str | int | Decimal | date = data['type']
-                    field: str = data['field']
+                for field, data in self.mapping_fields.items():
+                    value: str = row[data['row_index']]
+                    type_: str | int | Decimal | date | bool = data['type']
                     car_values[field] = self._parse_column(type_, value)
 
-                for field, data in self.mapping_relation.items():
+                for field, data in self.mapping_relational_fields.items():
                     model = data['model']
                     obj_values = {}
                     for obj_field, obj_data in data['fields'].items():

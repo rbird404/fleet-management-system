@@ -7,14 +7,36 @@ from cars.models import Subdivision
 
 
 class Command(BaseCommand):
+    mapping_fields = {
+        'name': {
+            'row_index': 3,
+            'type': str
+        },
+        'chief': {
+            'row_index': 5,
+            'type': str
+        },
+        'phone': {
+            'row_index': 7,
+            'type': str
+        },
+        'code': {
+            'row_index': slice(0, 3),
+            'type': str
+        }
+    }
+
     def _create_subdivision(self, row, parent=None):
-        return Subdivision.objects.create(
-            code=row[0] + row[1] + row[2],
-            name=row[3],
-            chief=row[5],
-            phone=row[-2],
-            parent=parent
-        )
+        values = {}
+        for field, data in self.mapping_fields.items():
+            value = row[data['row_index']]
+
+            if isinstance(data['row_index'], slice):
+                value = ''.join(value)
+            values[field] = value
+
+        values['parent'] = parent
+        return Subdivision.objects.create(**values)
 
     def _create_subdivisions(
         self, level: int, parent: Subdivision | None = None
@@ -26,14 +48,14 @@ class Command(BaseCommand):
             next(reader)
             for row in reader:
                 if level == 1:
-                    if row[1] == "":
+                    if row[1] == '':
                         subdivisions.append(
                             self._create_subdivision(row, None)
                         )
 
                 elif level == 2 and parent is not None:
                     row_code = row[0] + row[1] + row[2]
-                    if (row[1] != "" and row[2] == "" and
+                    if (row[1] != '' and row[2] == '' and
                             row_code.startswith(parent.code)):
                         subdivisions.append(
                             self._create_subdivision(row, parent)
@@ -41,7 +63,7 @@ class Command(BaseCommand):
 
                 elif level == 3 and parent is not None:
                     row_code = row[0] + row[1] + row[2]
-                    if (row[1] != "" and row[2] != "" and
+                    if (row[1] != '' and row[2] != '' and
                             row_code.startswith(parent.code)):
                         subdivisions.append(
                             self._create_subdivision(row, parent)
@@ -52,14 +74,14 @@ class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any) -> Optional[str]:
         subdivisions_first_lvl = self._create_subdivisions(level=1, parent=None)
         subdivisions_second_lvl = []
-        for structure in subdivisions_first_lvl:
+        for subdivision in subdivisions_first_lvl:
             subdivisions_second_lvl.extend(
-                self._create_subdivisions(level=2, parent=structure)
+                self._create_subdivisions(level=2, parent=subdivision)
             )
 
-        for structure in subdivisions_second_lvl:
+        for subdivision in subdivisions_second_lvl:
             self._create_subdivisions(
-                level=3, parent=structure
+                level=3, parent=subdivision
             )
 
         return None

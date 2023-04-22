@@ -10,18 +10,29 @@ from cars.models import (
 
 class Command(BaseCommand):
 
-    mapping = {
-        "A": CarType,
-        "C": Manufacturer,
-        "B": Brand,
-        "D": CarBody,
-        "E": CarGroup,
-        "c": GasolineBrand,
-        "F": CarClass,
-        "G": Color,
-        "H": MaintenanceService,
-        "I": Source,
-        "j": Warehouse,
+    mapping_models = {
+        'A': CarType,
+        'C': Manufacturer,
+        'B': Brand,
+        'D': CarBody,
+        'E': CarGroup,
+        'c': GasolineBrand,
+        'F': CarClass,
+        'G': Color,
+        'H': MaintenanceService,
+        'I': Source,
+        'J': Warehouse,
+    }
+
+    mapping_fields = {
+        'name': {
+            'row_index': 2,
+            'type': str
+        },
+        'code': {
+            'row_index': slice(0, 2),
+            'type': str
+        }
     }
 
     def handle(self, *args, **options):
@@ -29,10 +40,16 @@ class Command(BaseCommand):
             reader = csv.reader(file, delimiter=',')
             next(reader)
             for row in reader:
-                for code, model in self.mapping.items():
+                for model_code, model in self.mapping_models.items():
+                    # row[0] table id
                     # row[1] unique obj id
-                    if code == row[0] and row[1] != "":
-                        model.objects.create(
-                            name=row[2],
-                            code=row[0] + row[1],
-                        )
+                    if model_code == row[0] and row[1] != '':
+                        values = {}
+                        for field, data in self.mapping_fields.items():
+                            value = row[data['row_index']]
+
+                            if isinstance(data['row_index'], slice):
+                                value = ''.join(value)
+                            values[field] = value
+
+                        model.objects.create(**values)

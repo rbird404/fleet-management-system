@@ -1,5 +1,12 @@
 from rest_framework import routers
-from apps.cars.views import *
+
+from cars.views import (
+    CarTypeView, CarBodyView, CarClassView, CarGroupView,
+    ColorView, ManufacturerView, BrandView,
+    SourceView, MaintenanceServiceView, WarehouseView,
+    WaybillView, GasolineBrandView, SubdivisionView,
+    EngineView, PassportView, DistributionView, CarView
+)
 
 
 router = routers.DefaultRouter()
@@ -19,7 +26,7 @@ router.register("passports", PassportView, basename="passports")
 router.register("distributions", DistributionView, basename="distributions")
 router.register("waybills", WaybillView, basename="waybills")
 router.register("engines", EngineView, basename="engines")
-router.register("structures", StructureView, basename="structures")
+router.register("subdivisions", SubdivisionView, basename="subdivisions")
 router.register("", CarView, basename='cars')
 
 urlpatterns = router.urls

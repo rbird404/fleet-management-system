@@ -1,7 +1,11 @@
 from collections import OrderedDict
 from rest_framework import serializers
 from django.db import models
-from apps.cars.models import *
+from cars.models import (
+    CarType, CarBody, CarClass, CarGroup, Color, Manufacturer, Brand, Source,
+    MaintenanceService, Warehouse, Waybill, GasolineBrand, Subdivision, Engine,
+    Passport, Distribution, Car
+)
 
 
 class CarTypeSerializer(serializers.ModelSerializer):
@@ -76,11 +80,11 @@ class MaintenanceServiceSerializer(serializers.ModelSerializer):
         exclude = ('code',)
 
 
-class StructureSerializer(serializers.ModelSerializer):
+class SubdivisionSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
 
     class Meta:
-        model = Structure
+        model = Subdivision
         exclude = ('code',)
 
 
@@ -159,7 +163,7 @@ class CarDetailSerializer(serializers.ModelSerializer):
     )
     service = MaintenanceServiceSerializer(
         required=False, allow_null=True)
-    owner = StructureSerializer(
+    subdivision = SubdivisionSerializer(
         required=False, allow_null=True
     )
     source = SourceSerializer(
@@ -200,13 +204,15 @@ class CarDetailSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data: dict):
         nested_fields = {}
-        fields = self.get_fields()
+
         for field, value in validated_data.items():
             if isinstance(value, OrderedDict):
-                nested_fields[field] = self.get_or_create(
-                    fields[field].Meta.model, value
+                nested_fields[field] = self._get_or_create(
+                    self.fields[field].Meta.model, value
                 )
+
         validated_data.update(nested_fields)
+
         return super().create(validated_data)
 
     class Meta:

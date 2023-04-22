@@ -1,9 +1,20 @@
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 
-from apps.cars.models import *
-from apps.cars.serializers import *
-from apps.cars.filters import CarFilter
+from cars.filters import CarFilter
+from cars.models import (
+    CarType, CarBody, CarClass, CarGroup, Color, Manufacturer, Brand, Source,
+    MaintenanceService, Warehouse, Waybill, GasolineBrand, Subdivision, Engine,
+    Passport, Distribution, Car
+)
+from cars.serializers import (
+    CarTypeSerializer, CarBodySerializer, CarClassSerializer,
+    CarGroupSerializer, ColorSerializer, ManufacturerSerializer,
+    BrandSerializer, SourceSerializer, MaintenanceServiceSerializer,
+    WarehouseSerializer, WaybillSerializer, GasolineBrandSerializer,
+    SubdivisionSerializer, EngineSerializer, PassportSerializer,
+    DistributionSerializer, CarDetailSerializer
+)
 
 
 class CarView(ModelViewSet):
@@ -58,9 +69,9 @@ class MaintenanceServiceView(ModelViewSet):
     serializer_class = MaintenanceServiceSerializer
 
 
-class StructureView(ModelViewSet):
-    queryset = Structure.objects.all()
-    serializer_class = StructureSerializer
+class SubdivisionView(ModelViewSet):
+    queryset = Subdivision.objects.all()
+    serializer_class = SubdivisionSerializer
 
 
 class SourceView(ModelViewSet):

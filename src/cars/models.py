@@ -2,124 +2,72 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 
 
-class CarType(models.Model):
-    CSV_CODE = "A"
+class CarItemBase(models.Model):
     name = models.CharField(max_length=128)
     code = models.CharField(max_length=2, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name
 
+    class Meta:
+        abstract = True
+
+
+class CarType(CarItemBase):
     class Meta:
         verbose_name = "Тип транспортного средства"
         verbose_name_plural = "Типы Транспортных средств"
 
 
-class Manufacturer(models.Model):
-    CSV_CODE = "C"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class Manufacturer(CarItemBase):
     class Meta:
         verbose_name = "Завод Изготовитель"
         verbose_name_plural = "Заводы Изготовителя"
 
 
-class Brand(models.Model):
-    CSV_CODE = "B"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class Brand(CarItemBase):
     class Meta:
         verbose_name = "Марка транспортного средства"
         verbose_name_plural = "Марки Транспортных средств"
 
 
-class CarBody(models.Model):
-    CSV_CODE = "D"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class CarBody(CarItemBase):
     class Meta:
         verbose_name = "Тип Кузова"
         verbose_name_plural = "Тип Кузовов"
 
 
-class CarGroup(models.Model):
-    CSV_CODE = "E"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class CarGroup(CarItemBase):
     class Meta:
         verbose_name = "Штатная группа"
         verbose_name_plural = "Штатные группы"
 
 
-class GasolineBrand(models.Model):
-    CSV_CODE = "c"
-    name = models.CharField(max_length=6)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class GasolineBrand(CarItemBase):
     class Meta:
         verbose_name = "Марка Бензина"
         verbose_name_plural = "Марки бензина"
 
 
-class CarClass(models.Model):
-    CSV_CODE = "F"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class CarClass(CarItemBase):
     class Meta:
         verbose_name = "Класс Автотранспорта"
         verbose_name_plural = "Классы Автотранспорта"
 
 
-class Color(models.Model):
-    CSV_CODE = "G"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class Color(CarItemBase):
     class Meta:
         verbose_name = "Цвет Автотранспорта"
         verbose_name_plural = "Цвета Автотранспорта"
 
 
-class MaintenanceService(models.Model):
-    CSV_CODE = "H"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class MaintenanceService(CarItemBase):
     class Meta:
         verbose_name = "Служба эксплуатации автомобиля"
         verbose_name_plural = "Службы эксплутации автомобиля"
 
 
-class Structure(models.Model):
+class Subdivision(models.Model):
     code = models.CharField(max_length=4, unique=True)
     name = models.CharField(
         max_length=35,
@@ -155,30 +103,13 @@ class Structure(models.Model):
         verbose_name_plural = "Подразделения-владельцы транспорта"
 
 
-class Source(models.Model):
-    CSV_CODE = "I"
-    name = models.CharField(
-        max_length=128,
-        null=True, blank=True
-    )
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class Source(CarItemBase):
     class Meta:
         verbose_name = "Организ., выдавшая наряд"
         verbose_name_plural = "Организ., выдавшая наряд"
 
 
-class Warehouse(models.Model):
-    CSV_CODE = "J"
-    name = models.CharField(max_length=128)
-    code = models.CharField(max_length=2, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
+class Warehouse(CarItemBase):
     class Meta:
         verbose_name = "Склад"
         verbose_name_plural = "Склады"
@@ -355,20 +286,14 @@ class Car(models.Model):
         null=True,
         blank=True
     )
-    sign = models.CharField(
+    gov_number = models.CharField(
         verbose_name="Номер государственной регистрации",
         max_length=16,
         null=True,
         blank=True
     )
-    sign1 = models.CharField(
+    register_number = models.CharField(
         verbose_name="Реестровый номер",
-        max_length=16,
-        null=True,
-        blank=True
-    )
-    sign2 = models.CharField(
-        verbose_name="Дубль 2",
         max_length=16,
         null=True,
         blank=True
@@ -385,6 +310,7 @@ class Car(models.Model):
     )
     car_class = models.ForeignKey(
         CarClass,
+        db_column='class',
         verbose_name="Класс автомобиля",
         on_delete=models.SET_NULL,
         null=True,
@@ -404,8 +330,9 @@ class Car(models.Model):
         null=True,
         blank=True,
     )
-    owner = models.ForeignKey(
-        Structure,
+    subdivision = models.ForeignKey(
+        Subdivision,
+        db_column='owner',
         verbose_name="Подразделение-владелец транспорта",
         on_delete=models.SET_NULL,
         null=True,

@@ -1,14 +1,14 @@
 import csv
 from typing import Any, Optional
-from django.core.management.base import BaseCommand
+from django.core.management import BaseCommand
+
 from configs.settings import DATA_PATH
-from apps.cars.models import Structure
+from cars.models import Subdivision
 
 
 class Command(BaseCommand):
-
-    def _create_structure(self, row, parent=None):
-        return Structure.objects.create(
+    def _create_subdivision(self, row, parent=None):
+        return Subdivision.objects.create(
             code=row[0] + row[1] + row[2],
             name=row[3],
             chief=row[5],
@@ -16,10 +16,10 @@ class Command(BaseCommand):
             parent=parent
         )
 
-    def _create_structures(
-        self, level: int, parent: Structure | None = None
-    ) -> list[Structure]:
-        structures = []
+    def _create_subdivisions(
+        self, level: int, parent: Subdivision | None = None
+    ) -> list[Subdivision]:
+        subdivisions = []
 
         with open(DATA_PATH / 'STRUC.csv', newline='') as file:
             reader = csv.reader(file, delimiter=',')
@@ -27,39 +27,39 @@ class Command(BaseCommand):
             for row in reader:
                 if level == 1:
                     if row[1] == "":
-                        structures.append(
-                            self._create_structure(row, None)
+                        subdivisions.append(
+                            self._create_subdivision(row, None)
                         )
 
                 elif level == 2 and parent is not None:
                     row_code = row[0] + row[1] + row[2]
                     if (row[1] != "" and row[2] == "" and
                             row_code.startswith(parent.code)):
-                        structures.append(
-                            self._create_structure(row, parent)
+                        subdivisions.append(
+                            self._create_subdivision(row, parent)
                         )
 
                 elif level == 3 and parent is not None:
                     row_code = row[0] + row[1] + row[2]
                     if (row[1] != "" and row[2] != "" and
                             row_code.startswith(parent.code)):
-                        structures.append(
-                            self._create_structure(row, parent)
+                        subdivisions.append(
+                            self._create_subdivision(row, parent)
                         )
 
-        return structures
+        return subdivisions
 
     def handle(self, *args: Any, **options: Any) -> Optional[str]:
-        structures_first_lvl = self._create_structures(level=1, parent=None)
-        structures_second_lvl = []
-        for structure in structures_first_lvl:
-            structures_second_lvl.extend(
-                self._create_structures(level=2, parent=structure)  
+        subdivisions_first_lvl = self._create_subdivisions(level=1, parent=None)
+        subdivisions_second_lvl = []
+        for structure in subdivisions_first_lvl:
+            subdivisions_second_lvl.extend(
+                self._create_subdivisions(level=2, parent=structure)
             )
 
-        for structure in structures_second_lvl:
-            self._create_structures(
+        for structure in subdivisions_second_lvl:
+            self._create_subdivisions(
                 level=3, parent=structure
             )
 
-        return "SUCCESS"
+        return None

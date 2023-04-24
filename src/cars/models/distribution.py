@@ -6,12 +6,12 @@ class Distribution(models.Model):
         verbose_name="Номер распределения",
         max_length=15,
         null=True,
-        blank=True
+        blank=True,
     )
     date = models.DateField(
         verbose_name="Дата распределения",
         null=True,
-        blank=True
+        blank=True,
     )
 
     def __str__(self) -> str:

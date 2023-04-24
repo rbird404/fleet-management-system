@@ -33,6 +33,10 @@ class Command(BaseCommand):
 
             if isinstance(data['row_index'], slice):
                 value = ''.join(value)
+            else:
+                if value == '':
+                    value = None
+
             values[field] = value
 
         values['parent'] = parent

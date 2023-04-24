@@ -6,12 +6,12 @@ class Waybill(models.Model):
         verbose_name="Номер накладной",
         max_length=16,
         null=True,
-        blank=True
+        default=None
     )
     date = models.DateField(
         verbose_name="Дата накладной",
         null=True,
-        blank=True
+        default=None
     )
 
     def __str__(self) -> str:

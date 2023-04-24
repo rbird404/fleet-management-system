@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from cars.models import (
     CarType, Manufacturer, Brand, CarBody,
     CarGroup, GasolineBrand, CarClass, Color,
-    MaintenanceService, Source, Warehouse,
+    MaintenanceService, Source, Warehouse
 )
 
 
@@ -22,6 +22,14 @@ class Command(BaseCommand):
         'H': MaintenanceService,
         'I': Source,
         'J': Warehouse,
+        'N': Brand,
+        'X': Brand,
+        'O': Brand,
+        'P': Brand,
+        'Q': Brand,
+        'R': Brand,
+        'S': Brand,
+        'T': Brand,
     }
 
     mapping_fields = {
@@ -50,6 +58,10 @@ class Command(BaseCommand):
 
                             if isinstance(data['row_index'], slice):
                                 value = ''.join(value)
+                            else:
+                                if value == '':
+                                    value = None
+
                             values[field] = value
 
                         model.objects.create(**values)

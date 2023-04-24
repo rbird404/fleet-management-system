@@ -3,7 +3,7 @@ from django.db import models
 
 class CarItemBase(models.Model):
     name = models.CharField(max_length=40, null=True)
-    code = models.CharField(max_length=2, null=True, default=None)
+    code = models.CharField(max_length=2, null=True, blank=True)
 
     def __str__(self) -> str:
         return str(self.name)

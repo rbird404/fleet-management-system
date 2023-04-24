@@ -1,6 +1,11 @@
 from collections import OrderedDict
 from rest_framework import serializers
-from cars.models import Waybill, Engine, Passport, Distribution, Car
+from cars.models import (
+    Waybill, Engine, Passport, Distribution, Car,
+    CarType, Brand, Manufacturer, CarBody, CarGroup,
+    CarClass, GasolineBrand, Color, MaintenanceService,
+    Subdivision, Source, Warehouse
+)
 
 
 class EngineSerializer(serializers.ModelSerializer):
@@ -33,7 +38,7 @@ class CarCreateUpdateSerializer(serializers.ModelSerializer):
     passport = PassportSerializer()
     waybill = WaybillSerializer()
 
-    def create(self, validated_data: dict):
+    def create(self, validated_data: OrderedDict) -> Car:
         nested_fields = {}
         for field, data in validated_data.items():
             if isinstance(data, OrderedDict):
@@ -43,7 +48,7 @@ class CarCreateUpdateSerializer(serializers.ModelSerializer):
         validated_data.update(nested_fields)
         return super().create(validated_data)
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Car, validated_data: OrderedDict) -> Car:
         nested_fields = {}
         for field, value in validated_data.items():
             if isinstance(value, OrderedDict):
@@ -113,3 +118,75 @@ class CarDisplaySerializer(CarCreateUpdateSerializer, CarListSerializer):
     class Meta:
         model = Car
         fields = '__all__'
+
+
+class CarTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarType
+        exclude = ('code',)
+
+
+class ManufacturerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Manufacturer
+        exclude = ('code',)
+
+
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        exclude = ('code',)
+
+
+class CarBodySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarBody
+        exclude = ('code',)
+
+
+class CarGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarGroup
+        exclude = ('code',)
+
+
+class GasolineBrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GasolineBrand
+        exclude = ('code',)
+
+
+class CarClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarClass
+        exclude = ('code',)
+
+
+class ColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Color
+        exclude = ('code',)
+
+
+class MaintenanceServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MaintenanceService
+        exclude = ('code',)
+
+
+class SubdivisionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subdivision
+        exclude = ('code',)
+
+
+class SourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Source
+        exclude = ('code',)
+
+
+class WarehouseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Warehouse
+        exclude = ('code',)

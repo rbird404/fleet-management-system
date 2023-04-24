@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'django_filters',
+    'djoser',
     # MY APP
     'cars',
     'api',
+    'history'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +137,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATA_PATH = Path() / 'src' / 'data'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}

@@ -30,82 +30,82 @@ class Car(models.Model):
         verbose_name="Тип транспорта",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     manufacturer = models.ForeignKey(
         Manufacturer,
         verbose_name="Завод-Изготовитель",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     brand = models.ForeignKey(
         Brand,
         verbose_name="Марка",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     body = models.ForeignKey(
         CarBody,
         verbose_name="Тип Кузова",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     group = models.ForeignKey(
         CarGroup,
         verbose_name="Штатная группа",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     chass_number = models.CharField(
         verbose_name="Номер Шасси",
         max_length=8,
         null=True,
-        default=None
+        blank=True,
     )
     body_number = models.CharField(
         verbose_name="Номер Кузова",
         null=True,
-        default=None,
+        blank=True,
         max_length=8
     )
     year = models.PositiveIntegerField(
         verbose_name="Год выпуска",
         validators=[MaxValueValidator(9999)],
         null=True,
-        default=None,
+        blank=True
     )
     passport = models.OneToOneField(
         Passport,
         verbose_name="Тех. паспорт",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     gov_number = models.CharField(
         verbose_name="Номер государственной регистрации",
         max_length=16,
         null=True,
-        default=None
+        blank=True,
     )
     register_number = models.CharField(
         verbose_name="Реестровый номер",
         max_length=16,
         null=True,
-        default=None
+        blank=True,
     )
     sign_date = models.DateField(
         verbose_name="Дата выдачи номерного знака",
         null=True,
-        default=None
+        blank=True,
     )
     exploitation_date = models.DateField(
         verbose_name="Дата ввода в эксплутацию",
         null=True,
-        default=None,
+        blank=True
     )
     car_class = models.ForeignKey(
         CarClass,
@@ -113,21 +113,21 @@ class Car(models.Model):
         verbose_name="Класс автомобиля",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     color = models.ForeignKey(
         Color,
         verbose_name="Цвет автомобиля",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     service = models.ForeignKey(
         MaintenanceService,
         verbose_name="Служба эксплутации",
         on_delete=models.SET_NULL,
         null=True,
-        default=None,
+        blank=True
     )
     subdivision = models.ForeignKey(
         Subdivision,
@@ -135,122 +135,122 @@ class Car(models.Model):
         verbose_name="Подразделение-владелец транспорта",
         on_delete=models.SET_NULL,
         null=True,
-        default=None,
+        blank=True
     )
     cost = models.DecimalField(
         verbose_name="Балансовая стоимость",
         max_digits=18,
         decimal_places=2,
         null=True,
-        default=None,
+        blank=True
     )
     source = models.ForeignKey(
         Source,
         verbose_name="Источник получения",
         on_delete=models.SET_NULL,
         null=True,
-        default=None,
+        blank=True
     )
     source_number = models.CharField(
         verbose_name="Номер Фондового извещения",
         max_length=16,
         null=True,
-        default=None
+        blank=True,
     )
     source_date = models.DateField(
         verbose_name="Дата документа",
         null=True,
-        default=None
+        blank=True,
     )
     warehouse = models.ForeignKey(
         Warehouse,
         verbose_name="Склад",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     waybill = models.OneToOneField(
         Waybill,
         verbose_name="Накладная",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     distribution = models.OneToOneField(
         Distribution,
         verbose_name="Распределение",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     transfer_date = models.DateField(
         verbose_name="Дата передачи в подразделение",
         null=True,
-        default=None
+        blank=True,
     )
     del_date = models.DateField(
         verbose_name="Дата списания",
         null=True,
-        default=None
+        blank=True,
     )
     mileage_rate = models.DecimalField(
         verbose_name="Месячная норма пробега",
         max_digits=8,
         decimal_places=2,
         null=True,
-        default=None
+        blank=True,
     )
     fuel_rate = models.DecimalField(
         verbose_name="Норма расхода топлива на 100 км",
         max_digits=6,
         decimal_places=2,
         null=True,
-        default=None
+        blank=True,
     )
     id_number = models.CharField(
         verbose_name="Идентификационный номер",
         max_length=20,
         null=True,
-        default=None
+        blank=True,
     )
     gasoline_brand = models.ForeignKey(
         GasolineBrand,
         verbose_name="Марка бензина",
         on_delete=models.SET_NULL,
         null=True,
-        default=None
+        blank=True,
     )
     engine = models.OneToOneField(
         Engine,
         on_delete=models.SET_NULL,
         null=True,
-        default=None,
+        blank=True,
         verbose_name="Двигатель Т/С"
     )
     climate_control = models.BooleanField(
         verbose_name="Наличие системы Климат контроль",
         null=True,
-        default=None,
+        blank=True
     )
     base_rate = models.DecimalField(
         verbose_name="Базовая норма расхода топлива",
         max_digits=6,
         decimal_places=2,
         null=True,
-        default=None,
+        blank=True
     )
     identifier_fuel_rate = models.IntegerField(
         verbose_name="Инд. процент баз. нормы расхода топлива",
         validators=[MaxValueValidator(999)],
         null=True,
-        default=None,
+        blank=True
     )
     category = models.CharField(
-        choices=CATEGORIES,
         verbose_name="Категория автомобиля",
+        choices=CATEGORIES,
         max_length=1,
         null=True,
-        default=None
+        blank=True,
     )
     trust_date = models.DateField(
         verbose_name="Дата действия страхавого полиса",

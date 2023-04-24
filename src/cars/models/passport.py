@@ -6,12 +6,12 @@ class Passport(models.Model):
         verbose_name="Номер тех. паспорта",
         max_length=10,
         null=True,
-        blank=True
+        default=None
     )
     date = models.DateField(
         verbose_name="Дата выдачи тех. паспорта",
         null=True,
-        blank=True
+        default=None
     )
 
     def __str__(self) -> str:

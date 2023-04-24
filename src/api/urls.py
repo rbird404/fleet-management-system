@@ -1,6 +1,7 @@
-from django.urls import include, path
+from rest_framework import routers
+from .views import CarViewSet
 
-urlpatterns = [
-    path("cars/", include("cars.urls"))
+router = routers.DefaultRouter()
+router.register("cars", CarViewSet, basename='cars')
 
-]
+urlpatterns = router.urls

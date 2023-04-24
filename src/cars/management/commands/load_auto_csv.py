@@ -291,7 +291,16 @@ class Command(BaseCommand):
     def _parse_int(self, number: str) -> int | None:
         if number.isdigit():
             return int(number)
+        return None
 
+    def _parse_str(self, value: str) -> str | None:
+        if value == '':
+            return None
+        return value
+
+    def _parse_bool(self, value: str) -> bool | None:
+        if value.isdigit():
+            return bool(int(value))
         return None
 
     def _parse_column(
@@ -305,6 +314,12 @@ class Command(BaseCommand):
 
         elif type_ == Decimal:
             return self._parse_decimal(value)
+
+        elif type_ == str:
+            return self._parse_str(value)
+
+        elif type_ == bool:
+            return self._parse_bool(value)
 
         return value
 
@@ -324,7 +339,7 @@ class Command(BaseCommand):
                     obj_values = {}
                     for obj_field, obj_data in data['fields'].items():
                         value: str = row[obj_data['row_index']]
-                        type_: str | int | Decimal | date = obj_data['type']
+                        type_: str | int | Decimal | date | bool = obj_data['type']
                         obj_values[obj_field] = self._parse_column(type_, value)
 
                     car_values[field] = self._get_or_create(model, **obj_values)

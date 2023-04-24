@@ -2,11 +2,11 @@ from django.db import models
 
 
 class CarItemBase(models.Model):
-    name = models.CharField(max_length=40)
-    code = models.CharField(max_length=2, null=True, blank=True)
+    name = models.CharField(max_length=40, null=True)
+    code = models.CharField(max_length=2, null=True, default=None)
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
     class Meta:
         abstract = True

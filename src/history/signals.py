@@ -12,7 +12,7 @@ __all__ = (
 )
 
 
-def tracker_model_field_changes(sender, instance, fields_exclude, **kwargs):
+def tracker_model_field_changes(sender, instance, **kwargs):
     # use only pre_save
     if instance.id is None:
         pass

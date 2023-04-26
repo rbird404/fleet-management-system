@@ -1,8 +1,10 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 
+from cars.models.base import BaseModel
 
-class Engine(models.Model):
+
+class Engine(BaseModel):
     number = models.CharField(
         verbose_name="Номер Двигателя",
         max_length=16,

@@ -11,25 +11,25 @@ from cars.models import (
 class EngineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Engine
-        fields = '__all__'
+        exclude = ('is_deleted',)
 
 
 class WaybillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Waybill
-        fields = '__all__'
+        exclude = ('is_deleted',)
 
 
 class DistributionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Distribution
-        fields = '__all__'
+        exclude = ('is_deleted',)
 
 
 class PassportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passport
-        fields = '__all__'
+        exclude = ('is_deleted',)
 
 
 class CarCreateUpdateSerializer(serializers.ModelSerializer):
@@ -64,7 +64,7 @@ class CarCreateUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = '__all__'
+        exclude = ('is_deleted',)
 
 
 class CarListSerializer(serializers.ModelSerializer):
@@ -117,76 +117,76 @@ class CarDisplaySerializer(CarCreateUpdateSerializer, CarListSerializer):
 
     class Meta:
         model = Car
-        fields = '__all__'
+        exclude = ('is_deleted',)
 
 
 class CarTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarType
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manufacturer
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class CarBodySerializer(serializers.ModelSerializer):
     class Meta:
         model = CarBody
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class CarGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarGroup
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class GasolineBrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = GasolineBrand
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class CarClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarClass
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Color
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class MaintenanceServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = MaintenanceService
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class SubdivisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subdivision
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')
 
 
 class WarehouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Warehouse
-        exclude = ('code',)
+        exclude = ('code', 'is_deleted')

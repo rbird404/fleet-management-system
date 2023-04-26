@@ -1,7 +1,9 @@
 from django.db import models
 
+from cars.models.base import BaseModel
 
-class CarItemBase(models.Model):
+
+class CarItemBase(BaseModel):
     name = models.CharField(max_length=40, null=True)
     code = models.CharField(max_length=2, null=True, blank=True)
 

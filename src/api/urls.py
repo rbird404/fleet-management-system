@@ -1,5 +1,6 @@
 from rest_framework import routers
-from .views import (
+
+from api.views import (
     CarBodyViewSet, CarTypeViewSet, ColorViewSet,
     CarClassViewSet, BrandViewSet, CarGroupViewSet,
     MaintenanceServiceViewSet, ManufacturerViewSet,

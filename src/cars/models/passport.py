@@ -1,7 +1,9 @@
 from django.db import models
 
+from cars.models.base import BaseModel
 
-class Passport(models.Model):
+
+class Passport(BaseModel):
     number = models.CharField(
         verbose_name="Номер тех. паспорта",
         max_length=10,

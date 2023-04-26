@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 
+from cars.models.base import BaseModel
 from cars.models.distribution import Distribution
 from cars.models.engine import Engine
 from cars.models.passport import Passport
@@ -12,7 +13,7 @@ from cars.models.car_items import (
 )
 
 
-class Car(models.Model):
+class Car(BaseModel):
     CATEGORIES = (
         ("a", 'A'),
         ("b", 'B'),

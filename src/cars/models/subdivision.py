@@ -1,8 +1,10 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 
+from cars.models.base import BaseModel
 
-class Subdivision(models.Model):
+
+class Subdivision(BaseModel):
     code = models.CharField(max_length=4)
     name = models.CharField(
         verbose_name="Название Подразделения",

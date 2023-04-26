@@ -23,3 +23,11 @@ class CarFilter(filters.FilterSet):
             'manufacturer',
             'exploitation_date'
         )
+
+    def filter_queryset(self, queryset):
+        if (
+                not self.request.user.is_superuser
+                or not self.request.user.is_staff
+        ):
+            return queryset
+        return queryset.active()

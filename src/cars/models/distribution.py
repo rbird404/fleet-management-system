@@ -1,7 +1,9 @@
 from django.db import models
 
+from cars.models.base import BaseModel
 
-class Distribution(models.Model):
+
+class Distribution(BaseModel):
     number = models.CharField(
         verbose_name="Номер распределения",
         max_length=15,

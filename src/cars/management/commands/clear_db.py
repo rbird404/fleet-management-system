@@ -7,3 +7,7 @@ class Command(BaseCommand):
         app = apps.get_app_config('cars')
         for model in app.models.values():
             model.objects.all().delete()
+
+        app = apps.get_app_config('history')
+        for model in app.models.values():
+            model.objects.all().delete()

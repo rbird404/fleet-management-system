@@ -1,7 +1,9 @@
 from django.db import models
 
+from cars.models.base import BaseModel
 
-class Waybill(models.Model):
+
+class Waybill(BaseModel):
     number = models.CharField(
         verbose_name="Номер накладной",
         max_length=16,

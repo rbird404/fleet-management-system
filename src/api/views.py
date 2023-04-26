@@ -1,5 +1,7 @@
 from rest_framework import viewsets
+
 from api.filters import CarFilter
+from api.mixins import DeactivateModelMixin
 from api.serializers import (
     CarCreateUpdateSerializer, CarListSerializer,
     CarDisplaySerializer, CarTypeSerializer, ManufacturerSerializer,
@@ -15,7 +17,7 @@ from cars.models import (
 )
 
 
-class CarViewSet(viewsets.ModelViewSet):
+class CarViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = Car.objects.all()
     filterset_class = CarFilter
 
@@ -29,61 +31,61 @@ class CarViewSet(viewsets.ModelViewSet):
                 return CarDisplaySerializer
 
 
-class CarTypeViewSet(viewsets.ModelViewSet):
+class CarTypeViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = CarType.objects.all()
     serializer_class = CarTypeSerializer
 
 
-class ManufacturerViewSet(viewsets.ModelViewSet):
+class ManufacturerViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = Manufacturer.objects.all()
     serializer_class = ManufacturerSerializer
 
 
-class BrandViewSet(viewsets.ModelViewSet):
+class BrandViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
 
 
-class CarBodyViewSet(viewsets.ModelViewSet):
+class CarBodyViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = CarBody.objects.all()
     serializer_class = CarBodySerializer
 
 
-class CarGroupViewSet(viewsets.ModelViewSet):
+class CarGroupViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = CarGroup.objects.all()
     serializer_class = CarGroupSerializer
 
 
-class GasolineBrandViewSet(viewsets.ModelViewSet):
+class GasolineBrandViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = GasolineBrand.objects.all()
     serializer_class = GasolineBrandSerializer
 
 
-class CarClassViewSet(viewsets.ModelViewSet):
+class CarClassViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = CarClass.objects.all()
     serializer_class = CarClassSerializer
 
 
-class ColorViewSet(viewsets.ModelViewSet):
+class ColorViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = Color.objects.all()
     serializer_class = ColorSerializer
 
 
-class MaintenanceServiceViewSet(viewsets.ModelViewSet):
+class MaintenanceServiceViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = MaintenanceService.objects.all()
     serializer_class = MaintenanceServiceSerializer
 
 
-class SubdivisionViewSet(viewsets.ModelViewSet):
+class SubdivisionViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = Subdivision.objects.all()
     serializer_class = SubdivisionSerializer
 
 
-class SourceViewSet(viewsets.ModelViewSet):
+class SourceViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
 
 
-class WarehouseViewSet(viewsets.ModelViewSet):
+class WarehouseViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset = Warehouse.objects.all()
     serializer_class = WarehouseSerializer

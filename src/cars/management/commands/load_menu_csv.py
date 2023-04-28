@@ -1,6 +1,8 @@
 import csv
-from configs.settings import DATA_PATH
+from django.db import transaction
 from django.core.management.base import BaseCommand
+
+from configs.settings import DATA_PATH
 from cars.models import (
     CarType, Manufacturer, Brand, CarBody,
     CarGroup, GasolineBrand, CarClass, Color,
@@ -43,6 +45,7 @@ class Command(BaseCommand):
         }
     }
 
+    @transaction.atomic
     def handle(self, *args, **options):
         with open(DATA_PATH / 'MENU.csv', newline='') as file:
             reader = csv.reader(file, delimiter=',')

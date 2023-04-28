@@ -1,6 +1,7 @@
 import csv
 from typing import Any, Optional
 from django.core.management import BaseCommand
+from django.db import transaction
 
 from configs.settings import DATA_PATH
 from cars.models import Subdivision
@@ -75,8 +76,11 @@ class Command(BaseCommand):
 
         return subdivisions
 
+    @transaction.atomic
     def handle(self, *args: Any, **options: Any) -> Optional[str]:
-        subdivisions_first_lvl = self._create_subdivisions(level=1, parent=None)
+        subdivisions_first_lvl = self._create_subdivisions(
+            level=1, parent=None
+        )
         subdivisions_second_lvl = []
         for subdivision in subdivisions_first_lvl:
             subdivisions_second_lvl.extend(

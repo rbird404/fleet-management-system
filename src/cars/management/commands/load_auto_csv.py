@@ -1,7 +1,7 @@
 import csv
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
-from django.db import models
+from django.db import models, transaction
 from django.core.management.base import BaseCommand
 
 from configs.settings import DATA_PATH
@@ -323,6 +323,7 @@ class Command(BaseCommand):
 
         return value
 
+    @transaction.atomic
     def handle(self, *args, **options):
         with open(DATA_PATH / 'AUTO.csv', newline='') as auto:
             reader = csv.reader(auto, delimiter=',')

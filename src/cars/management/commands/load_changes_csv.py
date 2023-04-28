@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime, date
-
 from django.core.management.base import BaseCommand
+from django.db import transaction
 
 from configs.settings import DATA_PATH
 from history.models import History
@@ -75,6 +75,7 @@ class Command(BaseCommand):
             return datetime.strptime(date, '%d.%m.%Y').date()
         return None
 
+    @transaction.atomic
     def handle(self, *args, **options):
         with open(DATA_PATH / 'CHANGE.csv', newline='') as file:
             reader = csv.reader(file, delimiter=',')

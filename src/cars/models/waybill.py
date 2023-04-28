@@ -1,6 +1,9 @@
 from django.db import models
+from django.contrib.contenttypes.fields import GenericRelation
+
 
 from cars.models.base import BaseModel
+from history.models import History
 
 
 class Waybill(BaseModel):
@@ -15,6 +18,7 @@ class Waybill(BaseModel):
         null=True,
         default=None
     )
+    history = GenericRelation(History, related_query_name="waybill")
 
     def __str__(self) -> str:
         return f"{self.number} {self.date}"

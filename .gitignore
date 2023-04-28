@@ -134,3 +134,4 @@ db.sqlite3
 .vscode
 .idea
 load_changes.py
+*.csv

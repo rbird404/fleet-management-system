@@ -1,6 +1,9 @@
 from django.db import models
+from django.contrib.contenttypes.fields import GenericRelation
+
 
 from cars.models.base import BaseModel
+from history.models import History
 
 
 class Passport(BaseModel):
@@ -15,6 +18,7 @@ class Passport(BaseModel):
         null=True,
         blank=True
     )
+    history = GenericRelation(History, related_query_name="passport")
 
     def __str__(self) -> str:
         return f"{self.number} {self.date}"

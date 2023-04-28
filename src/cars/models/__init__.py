@@ -8,8 +8,11 @@ from cars.models.car_items import (
     Manufacturer, MaintenanceService, Color, Source, GasolineBrand
 )
 from cars.models.car import Car
+from cars.models.base import ActiveModelQuerySet
+
 
 __all__ = (
+    'ActiveModelQuerySet',
     'Distribution',
     'Engine',
     'Passport',

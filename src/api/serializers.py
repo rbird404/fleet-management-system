@@ -1,11 +1,13 @@
 from collections import OrderedDict
 from rest_framework import serializers
+
 from cars.models import (
     Waybill, Engine, Passport, Distribution, Car,
     CarType, Brand, Manufacturer, CarBody, CarGroup,
     CarClass, GasolineBrand, Color, MaintenanceService,
     Subdivision, Source, Warehouse
 )
+from history.models import History
 
 
 class EngineSerializer(serializers.ModelSerializer):
@@ -190,3 +192,16 @@ class WarehouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Warehouse
         exclude = ('code', 'is_deleted')
+
+
+class HistorySerializer(serializers.ModelSerializer):
+    content_type = serializers.CharField(source='content_type.model')
+
+    class Meta:
+        model = History
+        fields = (
+            'content_type',
+            'field',
+            'value',
+            'created_at'
+        )

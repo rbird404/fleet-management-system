@@ -1,5 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.request import Request
+from rest_framework.response import Response
 
+from api.services import HistoryService
 from api.filters import CarFilter
 from api.mixins import DeactivateModelMixin
 from api.serializers import (
@@ -8,7 +12,7 @@ from api.serializers import (
     BrandSerializer, CarBodySerializer, CarGroupSerializer,
     GasolineBrandSerializer, CarClassSerializer, ColorSerializer,
     MaintenanceServiceSerializer, SubdivisionSerializer,
-    SourceSerializer, WarehouseSerializer
+    SourceSerializer, WarehouseSerializer, HistorySerializer
 )
 from cars.models import (
     Car, CarType, Brand, Manufacturer, CarBody, CarGroup,
@@ -27,8 +31,19 @@ class CarViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
                 return CarListSerializer
             case 'create' | 'update':
                 return CarCreateUpdateSerializer
+            case 'history':
+                return HistorySerializer
             case _:
                 return CarDisplaySerializer
+
+    @action(detail=True, methods=['get'])
+    def history(self, request: Request, pk: int | None):
+        car: Car = self.get_object()
+        field: str = request.query_params.get('field')
+        history_service = HistoryService(car)
+        qs = history_service.get_history(field)
+        data = HistorySerializer(qs, many=True).data
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
 class CarTypeViewSet(DeactivateModelMixin, viewsets.ModelViewSet):

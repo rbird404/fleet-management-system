@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import MaxValueValidator
 
 from cars.models.base import BaseModel
+from history.models import History
 
 
 class Engine(BaseModel):
@@ -30,6 +32,8 @@ class Engine(BaseModel):
         null=True,
         blank=True,
     )
+    history = GenericRelation(History, related_query_name="engine")
+
 
     def __str__(self) -> str:
         return f"{self.number} {self.model}"

@@ -1,7 +1,8 @@
 from django.db.models.signals import pre_save
-from cars.models import Car, Engine, Distribution, Waybill, Passport
-from history.models import History, TYPES
 from django.db.models import Model
+
+from history.models import History, TYPES
+from cars.models import Car, Engine, Distribution, Waybill, Passport
 
 __all__ = (
     'car_changes_tracker',
@@ -12,7 +13,7 @@ __all__ = (
 )
 
 
-def tracker_model_field_changes(sender, instance, **kwargs):
+def tracker_model_field_changes(sender: Model, instance, **kwargs) -> None:
     # use only pre_save
     if instance.id is None:
         pass

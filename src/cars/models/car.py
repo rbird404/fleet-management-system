@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.contrib.contenttypes.fields import GenericRelation
 
 from cars.models.base import BaseModel
 from cars.models.distribution import Distribution
@@ -11,6 +12,7 @@ from cars.models.car_items import (
     CarBody, CarClass, CarGroup, CarType, Brand, Warehouse,
     Manufacturer, MaintenanceService, Color, Source, GasolineBrand
 )
+from history.models import History
 
 
 class Car(BaseModel):
@@ -269,6 +271,7 @@ class Car(BaseModel):
     updated_at = models.DateTimeField(
         verbose_name="Дата обновления", auto_now=True
     )
+    history = GenericRelation(History, related_query_name="car")
 
     def __str__(self):
         return f"Auto#{self.id} inv#{self.inventory_number}"

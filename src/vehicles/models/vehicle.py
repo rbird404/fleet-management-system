@@ -2,20 +2,20 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.contrib.contenttypes.fields import GenericRelation
 
-from cars.models.base import BaseModel
-from cars.models.distribution import Distribution
-from cars.models.engine import Engine
-from cars.models.passport import Passport
-from cars.models.subdivision import Subdivision
-from cars.models.waybill import Waybill
-from cars.models.car_items import (
-    CarBody, CarClass, CarGroup, CarType, Brand, Warehouse,
-    Manufacturer, MaintenanceService, Color, Source, GasolineBrand
+from vehicles.models.base import BaseModel
+from vehicles.models.distribution import Distribution
+from vehicles.models.engine import Engine
+from vehicles.models.passport import Passport
+from vehicles.models.subdivision import Subdivision
+from vehicles.models.waybill import Waybill
+from vehicles.models.vehicle_items import (
+    VehicleBody, VehicleClass, VehicleGroup, VehicleType, Brand, Warehouse,
+    Manufacturer, MaintenanceService, Color, Source, FuelType
 )
 from history.models import History
 
 
-class Car(BaseModel):
+class Vehicle(BaseModel):
     CATEGORIES = (
         ("a", 'A'),
         ("b", 'B'),
@@ -25,11 +25,10 @@ class Car(BaseModel):
 
     inventory_number = models.PositiveIntegerField(
         verbose_name="Инвентарный номер",
-        validators=[MaxValueValidator(99999)],
         unique=True
     )
     type = models.ForeignKey(
-        CarType,
+        VehicleType,
         verbose_name="Тип транспорта",
         on_delete=models.SET_NULL,
         null=True,
@@ -44,20 +43,20 @@ class Car(BaseModel):
     )
     brand = models.ForeignKey(
         Brand,
-        verbose_name="Марка",
+        verbose_name="Марка/Модель",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
     body = models.ForeignKey(
-        CarBody,
+        VehicleBody,
         verbose_name="Тип Кузова",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
     group = models.ForeignKey(
-        CarGroup,
+        VehicleGroup,
         verbose_name="Штатная группа",
         on_delete=models.SET_NULL,
         null=True,
@@ -110,14 +109,6 @@ class Car(BaseModel):
         null=True,
         blank=True
     )
-    car_class = models.ForeignKey(
-        CarClass,
-        db_column='class',
-        verbose_name="Класс автомобиля",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
     color = models.ForeignKey(
         Color,
         verbose_name="Цвет автомобиля",
@@ -134,7 +125,6 @@ class Car(BaseModel):
     )
     subdivision = models.ForeignKey(
         Subdivision,
-        db_column='owner',
         verbose_name="Подразделение-владелец транспорта",
         on_delete=models.SET_NULL,
         null=True,
@@ -216,8 +206,8 @@ class Car(BaseModel):
         null=True,
         blank=True,
     )
-    gasoline_brand = models.ForeignKey(
-        GasolineBrand,
+    fuel_type = models.ForeignKey(
+        FuelType,
         verbose_name="Марка бензина",
         on_delete=models.SET_NULL,
         null=True,
@@ -277,5 +267,5 @@ class Car(BaseModel):
         return f"Auto#{self.id} inv#{self.inventory_number}"
 
     class Meta:
-        verbose_name = "Автомобиль"
-        verbose_name_plural = "Автомобили"
+        verbose_name = "Транспортное средство"
+        verbose_name_plural = "Транспортные средства"

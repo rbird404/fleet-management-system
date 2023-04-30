@@ -5,10 +5,10 @@ from django.db import models, transaction
 from django.core.management.base import BaseCommand
 
 from configs.settings import DATA_PATH
-from cars.models import (
-    CarType, CarBody, CarClass, CarGroup, Color, Manufacturer, Brand, Source,
-    MaintenanceService, Warehouse, Waybill, GasolineBrand, Subdivision, Engine,
-    Passport, Distribution, Car
+from vehicles.models import (
+    VehicleType, VehicleBody, VehicleClass, VehicleGroup, Color, Manufacturer, Brand, Source,
+    MaintenanceService, Warehouse, Waybill, FuelType, Subdivision, Engine,
+    Passport, Distribution, Vehicle
 )
 
 
@@ -164,7 +164,7 @@ class Command(BaseCommand):
                     'type': str,
                 }
             },
-            'model': CarType
+            'model': VehicleType
         },
         'manufacturer': {
             'fields': {
@@ -191,7 +191,7 @@ class Command(BaseCommand):
                     'type': str,
                 }
             },
-            'model': CarBody
+            'model': VehicleBody
         },
         'group': {
             'fields': {
@@ -200,7 +200,7 @@ class Command(BaseCommand):
                     'type': str,
                 }
             },
-            'model': CarGroup
+            'model': VehicleGroup
         },
         'car_class': {
             'fields': {
@@ -209,7 +209,7 @@ class Command(BaseCommand):
                     'type': str,
                 }
             },
-            'model': CarClass
+            'model': VehicleClass
         },
         'color': {
             'fields': {
@@ -238,14 +238,14 @@ class Command(BaseCommand):
             },
             'model': Warehouse
         },
-        'gasoline_brand': {
+        'fuel_type': {
             'fields': {
                 'code': {
                     'row_index': 42,
                     'type': str,
                 }
             },
-            'model': GasolineBrand
+            'model': FuelType
         },
         'service': {
             'fields': {
@@ -345,4 +345,4 @@ class Command(BaseCommand):
 
                     car_values[field] = self._get_or_create(model, **obj_values)
 
-                Car.objects.create(**car_values)
+                Vehicle.objects.create(**car_values)

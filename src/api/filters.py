@@ -1,8 +1,8 @@
 from django_filters import rest_framework as filters
-from cars.models import Car
+from vehicles.models import Vehicle
 
 
-class CarFilter(filters.FilterSet):
+class VehicleFilter(filters.FilterSet):
     inventory_number = filters.NumberFilter()
     year = filters.NumberFilter()
     passport__number = filters.CharFilter()
@@ -12,7 +12,7 @@ class CarFilter(filters.FilterSet):
     exploitation_date = filters.DateFilter()
 
     class Meta:
-        model = Car
+        model = Vehicle
         fields = (
             'inventory_number',
             'year',

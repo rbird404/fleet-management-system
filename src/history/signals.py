@@ -2,7 +2,7 @@ from django.db.models.signals import pre_save
 from django.db.models import Model
 
 from history.models import History, TYPES
-from cars.models import Car, Engine, Distribution, Waybill, Passport
+from vehicles.models import Vehicle, Engine, Distribution, Waybill, Passport
 
 __all__ = (
     'car_changes_tracker',
@@ -40,7 +40,7 @@ def tracker_model_field_changes(sender: Model, instance, **kwargs) -> None:
 
 
 car_changes_tracker = pre_save.connect(
-    tracker_model_field_changes, sender=Car
+    tracker_model_field_changes, sender=Vehicle
 )
 engine_changes_tracker = pre_save.connect(
     tracker_model_field_changes, sender=Engine

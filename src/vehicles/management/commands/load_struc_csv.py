@@ -4,7 +4,7 @@ from django.core.management import BaseCommand
 from django.db import transaction
 
 from configs.settings import DATA_PATH
-from cars.models import Subdivision
+from vehicles.models import Subdivision
 
 
 class Command(BaseCommand):

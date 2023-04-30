@@ -3,7 +3,7 @@ from django.db.models import Model, QuerySet
 from django.db.models import Q
 
 from api.exceptions import FieldNotAllowed
-from cars.models import Car
+from vehicles.models import Vehicle
 from history.models import History
 
 
@@ -48,7 +48,7 @@ class HistoryService:
         "to_date",
     )
 
-    def __init__(self, car: Car):
+    def __init__(self, car: Vehicle):
         self.car = car
 
     def get_history_by_field(self, field: str) -> QuerySet[History]:
@@ -64,7 +64,7 @@ class HistoryService:
             )
         else:
             qs = History.objects.filter(
-                content_type=ContentType.objects.get_for_model(Car),
+                content_type=ContentType.objects.get_for_model(Vehicle),
                 object_id=self.car.id, field=field
             )
 
@@ -72,7 +72,7 @@ class HistoryService:
 
     def get_all_history(self) -> QuerySet[History]:
         query = Q(
-            content_type=ContentType.objects.get_for_model(Car),
+            content_type=ContentType.objects.get_for_model(Vehicle),
             object_id=self.car.id
         )
 

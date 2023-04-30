@@ -5,9 +5,9 @@ from django.db import transaction
 
 from configs.settings import DATA_PATH
 from history.models import History
-from cars.models import (
-    Brand, CarBody, CarGroup, Color,
-    MaintenanceService, Engine, Passport, Subdivision, Car
+from vehicles.models import (
+    Brand, VehicleBody, VehicleGroup, Color,
+    MaintenanceService, Engine, Passport, Subdivision, Vehicle
 )
 
 
@@ -17,7 +17,7 @@ class Command(BaseCommand):
             'field': 'body',
             'change_field': 'number',
             'type': 'str',
-            'model': CarBody,
+            'model': VehicleBody,
         },
         5: {
             'field': 'engine',
@@ -54,11 +54,11 @@ class Command(BaseCommand):
         },
         22: {
             'field': 'body',
-            'model': CarBody
+            'model': VehicleBody
         },
         23: {
             'field': 'group',
-            'model': CarGroup
+            'model': VehicleGroup
         },
         28: {
             'field': 'subdivision',
@@ -83,8 +83,8 @@ class Command(BaseCommand):
             for index, row in enumerate(reader, start=1):
                 inv_number = row[0]  # inventory_number
                 try:
-                    car = Car.objects.get(inventory_number=inv_number)
-                except Car.DoesNotExist:
+                    car = Vehicle.objects.get(inventory_number=inv_number)
+                except Vehicle.DoesNotExist:
                     continue
                 change_index = int(row[1])
                 if change_index in self.mapping_fields:

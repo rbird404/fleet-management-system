@@ -4,41 +4,41 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from api.services import HistoryService
-from api.filters import CarFilter
+from api.filters import VehicleFilter
 from api.mixins import DeactivateModelMixin
 from api.serializers import (
-    CarCreateUpdateSerializer, CarListSerializer,
-    CarDisplaySerializer, CarTypeSerializer, ManufacturerSerializer,
-    BrandSerializer, CarBodySerializer, CarGroupSerializer,
-    GasolineBrandSerializer, CarClassSerializer, ColorSerializer,
+    VehicleCreateUpdateSerializer, VehicleListSerializer,
+    VehicleDisplaySerializer, VehicleTypeSerializer, ManufacturerSerializer,
+    BrandSerializer, VehicleBodySerializer, VehicleGroupSerializer,
+    GasolineBrandSerializer, VehicleClassSerializer, ColorSerializer,
     MaintenanceServiceSerializer, SubdivisionSerializer,
     SourceSerializer, WarehouseSerializer, HistorySerializer
 )
-from cars.models import (
-    Car, CarType, Brand, Manufacturer, CarBody, CarGroup,
-    CarClass, GasolineBrand, Color, MaintenanceService,
+from vehicles.models import (
+    Vehicle, VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,
+    VehicleClass, FuelType, Color, MaintenanceService,
     Subdivision, Source, Warehouse
 )
 
 
-class CarViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
-    queryset = Car.objects.all()
-    filterset_class = CarFilter
+class VehicleViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
+    queryset = Vehicle.objects.all()
+    filterset_class = VehicleFilter
 
     def get_serializer_class(self):
         match self.action:
             case 'list':
-                return CarListSerializer
+                return VehicleListSerializer
             case 'create' | 'update':
-                return CarCreateUpdateSerializer
+                return VehicleCreateUpdateSerializer
             case 'history':
                 return HistorySerializer
             case _:
-                return CarDisplaySerializer
+                return VehicleDisplaySerializer
 
     @action(detail=True, methods=['get'])
     def history(self, request: Request, pk: int | None):
-        car: Car = self.get_object()
+        car: Vehicle = self.get_object()
         field: str = request.query_params.get('field')
         history_service = HistoryService(car)
         qs = history_service.get_history(field)
@@ -46,9 +46,9 @@ class CarViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
         return Response(data=data, status=status.HTTP_200_OK)
 
 
-class CarTypeViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
-    queryset = CarType.objects.all()
-    serializer_class = CarTypeSerializer
+class VehicleTypeViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
+    queryset = VehicleType.objects.all()
+    serializer_class = VehicleTypeSerializer
 
 
 class ManufacturerViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
@@ -61,24 +61,24 @@ class BrandViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     serializer_class = BrandSerializer
 
 
-class CarBodyViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
-    queryset = CarBody.objects.all()
-    serializer_class = CarBodySerializer
+class VehicleBodyViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
+    queryset = VehicleBody.objects.all()
+    serializer_class = VehicleBodySerializer
 
 
-class CarGroupViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
-    queryset = CarGroup.objects.all()
-    serializer_class = CarGroupSerializer
+class VehicleGroupViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
+    queryset = VehicleGroup.objects.all()
+    serializer_class = VehicleGroupSerializer
 
 
 class GasolineBrandViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
-    queryset = GasolineBrand.objects.all()
+    queryset = FuelType.objects.all()
     serializer_class = GasolineBrandSerializer
 
 
-class CarClassViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
-    queryset = CarClass.objects.all()
-    serializer_class = CarClassSerializer
+class VehicleClassViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
+    queryset = VehicleClass.objects.all()
+    serializer_class = VehicleClassSerializer
 
 
 class ColorViewSet(DeactivateModelMixin, viewsets.ModelViewSet):

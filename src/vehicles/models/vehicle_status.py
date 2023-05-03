@@ -1,5 +1,6 @@
 from django.db import models
-from .base import BaseModel
+
+from common.models import BaseModel
 
 
 class VehicleStatus(BaseModel):

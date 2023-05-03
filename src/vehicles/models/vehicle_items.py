@@ -1,6 +1,6 @@
 from django.db import models
 
-from vehicles.models.base import BaseModel
+from common.models import BaseModel
 
 
 class VehicleItemBase(BaseModel):

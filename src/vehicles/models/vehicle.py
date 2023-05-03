@@ -2,17 +2,17 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.contrib.contenttypes.fields import GenericRelation
 
-from vehicles.models.base import BaseModel
+from common.models import BaseModel
 from vehicles.models.distribution import Distribution
 from vehicles.models.engine import Engine
 from vehicles.models.passport import Passport
 from vehicles.models.subdivision import Subdivision
-from vehicles.models.waybill import Waybill
 from vehicles.models.vehicle_items import (
-    VehicleBody, VehicleClass, VehicleGroup, VehicleType, Brand, Warehouse,
+    VehicleBody, VehicleGroup, VehicleType, Brand, Warehouse,
     Manufacturer, MaintenanceService, Color, Source, FuelType
 )
 from history.models import History
+from vehicles.models.vehicle_status import VehicleStatus
 
 
 class Vehicle(BaseModel):
@@ -44,6 +44,12 @@ class Vehicle(BaseModel):
     brand = models.ForeignKey(
         Brand,
         verbose_name="Марка/Модель",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    status = models.ForeignKey(
+        VehicleStatus,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -130,13 +136,6 @@ class Vehicle(BaseModel):
         null=True,
         blank=True
     )
-    cost = models.DecimalField(
-        verbose_name="Балансовая стоимость",
-        max_digits=18,
-        decimal_places=2,
-        null=True,
-        blank=True
-    )
     source = models.ForeignKey(
         Source,
         verbose_name="Источник получения",
@@ -158,13 +157,6 @@ class Vehicle(BaseModel):
     warehouse = models.ForeignKey(
         Warehouse,
         verbose_name="Склад",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
-    waybill = models.OneToOneField(
-        Waybill,
-        verbose_name="Накладная",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -255,13 +247,8 @@ class Vehicle(BaseModel):
         null=True,
         blank=True
     )
-    created_at = models.DateTimeField(
-        verbose_name="Дата ввода", auto_now_add=True
-    )
-    updated_at = models.DateTimeField(
-        verbose_name="Дата обновления", auto_now=True
-    )
-    history = GenericRelation(History, related_query_name="car")
+
+    history = GenericRelation(History, related_query_name="vehicle")
 
     def __str__(self):
         return f"Auto#{self.id} inv#{self.inventory_number}"

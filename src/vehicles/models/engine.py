@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
-from django.core.validators import MaxValueValidator
 
-from vehicles.models.base import BaseModel
+from common.models import BaseModel
 from history.models import History
 
 
@@ -21,7 +20,6 @@ class Engine(BaseModel):
     )
     power = models.IntegerField(
         verbose_name="Мощность двигателя т/c",
-        validators=[MaxValueValidator(999)],
         null=True,
         blank=True,
     )

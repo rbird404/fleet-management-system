@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
 
-from vehicles.models.base import BaseModel
+from common.models import BaseModel
 from history.models import History
 
 

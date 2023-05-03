@@ -45,8 +45,13 @@ INSTALLED_APPS = [
     'djoser',
     # MY APP
     'vehicles',
+    'common',
+    'expenses',
+    'fueling',
     'api',
-    'history'
+    'vehicle_service',
+    'history',
+    'waybills',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +153,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+SWAGGER_SETTINGS = {"DEFAULT_AUTO_SCHEMA_CLASS": "api.schema.CustomAutoSchema"}

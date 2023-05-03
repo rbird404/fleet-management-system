@@ -2,7 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model, QuerySet
 from django.db.models import Q
 
-from api.exceptions import FieldNotAllowed
+from vehicles.exceptions import FieldNotAllowed
 from vehicles.models import Vehicle
 from history.models import History
 

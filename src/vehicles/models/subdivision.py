@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 
-from vehicles.models.base import BaseModel
+from common.models import BaseModel
 
 
 class Subdivision(BaseModel):

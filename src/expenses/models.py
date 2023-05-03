@@ -23,4 +23,3 @@ class Expense(BaseModel):
         verbose_name="Тип расходов"
     )
     reported_date = models.DateTimeField()
-    # photos | files

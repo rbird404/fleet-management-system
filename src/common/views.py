@@ -8,5 +8,5 @@ from common.serializers import BaseSerializer
 
 class APIViewSet(DeactivateModelMixin, viewsets.ModelViewSet):
     queryset: BaseModel
-    filterset_class: BaseFilterSet
+    filterset_class = BaseFilterSet
     serializer_class: BaseSerializer

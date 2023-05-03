@@ -19,7 +19,11 @@ class ServiceRecord(BaseModel):
     end_date = models.DateTimeField()
     tasks = models.ManyToManyField(ServiceTask, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
-    # photo/ files
+    counter = models.OneToOneField(
+        Counter,
+        on_delete=models.CASCADE,
+        related_name="records"
+    )
 
 
 class ServiceIssue(BaseModel):
@@ -46,7 +50,9 @@ class ServiceIssue(BaseModel):
     description = models.TextField()
     status = models.CharField(
         choices=STATUSES,
-        max_length=10
+        max_length=10,
+        blank=True,
+        default='open'
     )
     service_record = models.ForeignKey(
         ServiceRecord,
@@ -60,5 +66,3 @@ class ServiceIssue(BaseModel):
         on_delete=models.CASCADE,
         related_name="issue"
     )
-    # photo/ files
-    # tags

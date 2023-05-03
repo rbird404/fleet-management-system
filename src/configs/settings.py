@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'vehicle_service',
     'history',
     'waybills',
+    'storage'
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,6 @@ REST_FRAMEWORK = {
 }
 
 SWAGGER_SETTINGS = {"DEFAULT_AUTO_SCHEMA_CLASS": "api.schema.CustomAutoSchema"}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

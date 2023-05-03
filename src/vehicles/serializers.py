@@ -10,6 +10,8 @@ from vehicles.models import (
 )
 from history.models import History
 from vehicles.models.vehicle_status import VehicleStatus
+from storage.models import Image, File
+from storage.serializers import ImageSerializer
 
 
 class EngineSerializer(BaseSerializer):
@@ -34,6 +36,12 @@ class VehicleCreateUpdateSerializer(BaseSerializer):
     engine = EngineSerializer()
     distribution = DistributionSerializer()
     passport = PassportSerializer()
+    images = serializers.PrimaryKeyRelatedField(
+        queryset=Image.objects.all(), required=False, many=True
+    )
+    files = serializers.PrimaryKeyRelatedField(
+        queryset=File.objects.all(), required=False, many=True
+    )
 
     def create(self, validated_data: OrderedDict) -> Vehicle:
         nested_fields = {}
@@ -74,6 +82,7 @@ class VehicleListSerializer(serializers.ModelSerializer):
     brand = serializers.CharField(source="brand.name", allow_null=True)
     group = serializers.CharField(source="group.name", allow_null=True)
     status = VehicleStatusSerializer(allow_null=True)
+    images = ImageSerializer(read_only=True, many=True)
 
     class Meta:
         model = Vehicle
@@ -84,7 +93,8 @@ class VehicleListSerializer(serializers.ModelSerializer):
             'year',
             'gov_number',
             'group',
-            'status'
+            'status',
+            'images'
         )
 
 
@@ -119,8 +129,8 @@ class VehicleDisplaySerializer(
     warehouse = serializers.CharField(
         source="warehouse.name", allow_null=True
     )
-    gasoline_brand = serializers.CharField(
-        source="gasoline_brand.name", allow_null=True
+    fuel_type = serializers.CharField(
+        source="fuel_type.name", allow_null=True
     )
 
     class Meta:

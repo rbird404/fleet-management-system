@@ -300,6 +300,18 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "pillow"
+version = "9.5.0"
+description = "Python Imaging Library (Fork)"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-inline-tabs", "sphinx-removed-in", "sphinxext-opengraph"]
+tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
+
+[[package]]
 name = "psycopg2-binary"
 version = "2.9.6"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
@@ -513,7 +525,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "6fd924c05570901f988a1ce3291a22bac43afc48423d150307c506e66bf0d7b9"
+content-hash = "03476a6ad0d54faf235cceb26c2fb93702831a662e06358943d26413b11d6557"
 
 [metadata.files]
 asgiref = []
@@ -559,6 +571,7 @@ markupsafe = []
 mccabe = []
 oauthlib = []
 packaging = []
+pillow = []
 psycopg2-binary = []
 pycodestyle = []
 pycparser = [

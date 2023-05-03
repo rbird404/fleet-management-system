@@ -12,8 +12,8 @@ from vehicles.serializers import (
     BrandSerializer, VehicleBodySerializer, VehicleGroupSerializer,
     FuelTypeSerializer, VehicleClassSerializer, ColorSerializer,
     MaintenanceServiceSerializer, SubdivisionSerializer,
-    SourceSerializer, WarehouseSerializer, HistorySerializer, VehicleFileSerializer,
-    VehicleImageSerializer
+    SourceSerializer, WarehouseSerializer, HistorySerializer,
+    VehicleFileSerializer, VehicleImageSerializer
 )
 from vehicles.models import (
     Vehicle, VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,

@@ -4,12 +4,10 @@ from common.filters import BaseFilterSet
 
 
 class VehicleFilter(BaseFilterSet):
-    inventory_number = filters.NumberFilter()
-    year = filters.NumberFilter()
-    passport__number = filters.CharFilter()
+    passport = filters.CharFilter(field_name='passport__number')
     sign = filters.CharFilter()
-    subdivision__pk = filters.NumberFilter()
-    service__pk = filters.NumberFilter()
+    subdivision = filters.NumberFilter(field_name='subdivision__pk')
+    service = filters.NumberFilter(field_name='service__pk')
     exploitation_date = filters.DateFilter()
 
     class Meta:

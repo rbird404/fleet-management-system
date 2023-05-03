@@ -1,18 +1,15 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
-from django.contrib.contenttypes.fields import GenericRelation
 
 from common.models import BaseModel
 from vehicles.models.distribution import Distribution
 from vehicles.models.engine import Engine
 from vehicles.models.passport import Passport
 from vehicles.models.subdivision import Subdivision
-from vehicles.models.waybill import Waybill
 from vehicles.models.vehicle_items import (
     VehicleBody, VehicleClass, VehicleGroup, VehicleType, Brand, Warehouse,
     Manufacturer, MaintenanceService, Color, Source, FuelType
 )
-from history.models import History
 
 
 class Vehicle(BaseModel):
@@ -172,13 +169,6 @@ class Vehicle(BaseModel):
         null=True,
         blank=True,
     )
-    waybill = models.OneToOneField(
-        Waybill,
-        verbose_name="Накладная",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
     distribution = models.OneToOneField(
         Distribution,
         verbose_name="Распределение",
@@ -265,13 +255,6 @@ class Vehicle(BaseModel):
         null=True,
         blank=True
     )
-    created_at = models.DateTimeField(
-        verbose_name="Дата ввода", auto_now_add=True
-    )
-    updated_at = models.DateTimeField(
-        verbose_name="Дата обновления", auto_now=True
-    )
-    history = GenericRelation(History, related_query_name="vehicle")
 
     def __str__(self):
         return f"Auto#{self.id} inv#{self.inventory_number}"

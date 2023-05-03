@@ -6,9 +6,21 @@ from vehicles.models import (
     Engine, Passport, Distribution, Vehicle,
     VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,
     VehicleClass, FuelType, Color, MaintenanceService,
-    Subdivision, Source, Warehouse
+    Subdivision, Source, Warehouse, VehicleImage, VehicleFile
 )
 from history.models import History
+
+
+class VehicleImageSerializer(BaseSerializer):
+    class Meta:
+        model = VehicleImage
+        fields = "__all__"
+
+
+class VehicleFileSerializer(BaseSerializer):
+    class Meta:
+        model = VehicleFile
+        fields = "__all__"
 
 
 class EngineSerializer(BaseSerializer):
@@ -29,10 +41,16 @@ class PassportSerializer(BaseSerializer):
         fields = '__all__'
 
 
-class VehicleCreateUpdateSerializer(BaseSerializer):
+class VehicleDetailSerializer(BaseSerializer):
     engine = EngineSerializer()
     distribution = DistributionSerializer()
     passport = PassportSerializer()
+    images = serializers.PrimaryKeyRelatedField(
+        queryset=VehicleImage.objects.all(), required=False, many=True
+    )
+    files = serializers.PrimaryKeyRelatedField(
+        queryset=VehicleFile.objects.all(), required=False, many=True
+    )
 
     def create(self, validated_data: OrderedDict) -> Vehicle:
         nested_fields = {}
@@ -66,6 +84,8 @@ class VehicleCreateUpdateSerializer(BaseSerializer):
 class VehicleListSerializer(serializers.ModelSerializer):
     brand = serializers.CharField(source="brand.name", allow_null=True)
     group = serializers.CharField(source='group.name', allow_null=True)
+    images = VehicleImageSerializer(many=True)
+    files = VehicleFileSerializer(many=True)
 
     class Meta:
         model = Vehicle
@@ -75,12 +95,14 @@ class VehicleListSerializer(serializers.ModelSerializer):
             'brand',
             'year',
             'gov_number',
-            'group'
+            'group',
+            'images',
+            'files'
         )
 
 
 class VehicleDisplaySerializer(
-    VehicleCreateUpdateSerializer,
+    VehicleDetailSerializer,
     VehicleListSerializer
 ):
     type = serializers.CharField(

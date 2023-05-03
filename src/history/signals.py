@@ -2,13 +2,12 @@ from django.db.models.signals import pre_save
 from django.db.models import Model
 
 from history.models import History, TYPES
-from vehicles.models import Vehicle, Engine, Distribution, Waybill, Passport
+from vehicles.models import Vehicle, Engine, Distribution, Passport
 
 __all__ = (
     'vehicle_changes_tracker',
     'engine_changes_tracker',
     'distribution_changes_tracker',
-    'waybill_changes_tracker',
     'passport_changes_tracker'
 )
 
@@ -47,9 +46,6 @@ engine_changes_tracker = pre_save.connect(
 )
 distribution_changes_tracker = pre_save.connect(
     tracker_model_field_changes, sender=Distribution
-)
-waybill_changes_tracker = pre_save.connect(
-    tracker_model_field_changes, sender=Waybill
 )
 passport_changes_tracker = pre_save.connect(
     tracker_model_field_changes, sender=Passport

@@ -6,10 +6,11 @@ from django.core.management.base import BaseCommand
 
 from configs.settings import DATA_PATH
 from vehicles.models import (
-    VehicleType, VehicleBody, VehicleClass, VehicleGroup, Color, Manufacturer, Brand, Source,
-    MaintenanceService, Warehouse, Waybill, FuelType, Subdivision, Engine,
+    VehicleType, VehicleBody, VehicleClass, VehicleGroup, Color, Manufacturer,
+    Brand, Source, MaintenanceService, Warehouse, FuelType, Subdivision, Engine,
     Passport, Distribution, Vehicle
 )
+from waybills.models import Waybill
 
 
 class Command(BaseCommand):
@@ -266,10 +267,13 @@ class Command(BaseCommand):
             'model': Subdivision
         }
     }
-    _one_to_one_models = (Engine, Distribution, Waybill, Passport)
+    _one_to_one_models = (Engine, Distribution, Passport)
+    _one_to_many_models = ('waybill',)
 
     def _get_or_create(self, model_class: models.Model, **kwargs) -> models.Model | None:
         if model_class in self._one_to_one_models:
+            return model_class.objects.create(**kwargs)
+        if model_class is Waybill:
             return model_class.objects.create(**kwargs)
         try:
             return model_class.objects.get(**kwargs)
@@ -304,7 +308,7 @@ class Command(BaseCommand):
         return None
 
     def _parse_column(
-        self, type_: str | int | Decimal | date | bool, value: str
+            self, type_: str | int | Decimal | date | bool, value: str
     ) -> str | int | Decimal | date | None:
         if type_ == int:
             return self._parse_int(value)
@@ -337,6 +341,8 @@ class Command(BaseCommand):
 
                 for field, data in self.mapping_relational_fields.items():
                     model = data['model']
+                    if field in self._one_to_many_models:
+                        continue
                     obj_values = {}
                     for obj_field, obj_data in data['fields'].items():
                         value: str = row[obj_data['row_index']]
@@ -345,4 +351,15 @@ class Command(BaseCommand):
 
                     vehicle_values[field] = self._get_or_create(model, **obj_values)
 
-                Vehicle.objects.create(**vehicle_values)
+                vehicle = Vehicle.objects.create(**vehicle_values)
+
+                for model_name in self._one_to_many_models:
+                    data = self.mapping_relational_fields[model_name]
+                    model = data['model']
+                    obj_values = {}
+                    for obj_field, obj_data in data['fields'].items():
+                        value: str = row[obj_data['row_index']]
+                        type_: str | int | Decimal | date | bool = obj_data['type']
+                        obj_values[obj_field] = self._parse_column(type_, value)
+
+                    self._get_or_create(model, vehicle=vehicle, **obj_values)

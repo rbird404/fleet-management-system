@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'djoser',
     # MY APP
     'vehicles',
+    'common',
+    'waybills',
     'api',
     'history'
 ]
@@ -148,3 +150,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+SWAGGER_SETTINGS = {"DEFAULT_AUTO_SCHEMA_CLASS": "api.schema.CustomAutoSchema"}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

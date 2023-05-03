@@ -31,7 +31,6 @@ class HistoryService:
         "source_number",
         "source_date",
         "warehouse",
-        "waybill",
         "distribution",
         "transfer_date",
         "del_date",

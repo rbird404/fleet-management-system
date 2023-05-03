@@ -5,9 +5,9 @@ from django.db import transaction
 
 from configs.settings import DATA_PATH
 from history.models import History
-from cars.models import (
-    Brand, CarBody, CarGroup, Color,
-    MaintenanceService, Engine, Passport, Subdivision, Car
+from vehicles.models import (
+    Brand, VehicleBody, VehicleGroup, Color,
+    MaintenanceService, Engine, Passport, Subdivision, Vehicle
 )
 
 
@@ -17,9 +17,9 @@ class Command(BaseCommand):
             'field': 'body',
             'change_field': 'number',
             'type': 'str',
-            'model': CarBody,
+            'model': VehicleBody,
         },
-        5: {
+        7: {
             'field': 'engine',
             'change_field': 'number',
             'type': 'str',
@@ -54,11 +54,11 @@ class Command(BaseCommand):
         },
         22: {
             'field': 'body',
-            'model': CarBody
+            'model': VehicleBody
         },
         23: {
             'field': 'group',
-            'model': CarGroup
+            'model': VehicleGroup
         },
         28: {
             'field': 'subdivision',
@@ -83,13 +83,13 @@ class Command(BaseCommand):
             for index, row in enumerate(reader, start=1):
                 inv_number = row[0]  # inventory_number
                 try:
-                    car = Car.objects.get(inventory_number=inv_number)
-                except Car.DoesNotExist:
+                    vehicle = Vehicle.objects.get(inventory_number=inv_number)
+                except Vehicle.DoesNotExist:
                     continue
                 change_index = int(row[1])
                 if change_index in self.mapping_fields:
                     data = {
-                        'content_object': car,
+                        'content_object': vehicle,
                         'field': self.mapping_fields[change_index],
                         'value': row[2],
                         'value_type': 'str',
@@ -97,7 +97,7 @@ class Command(BaseCommand):
 
                 elif change_index in self.mapping_one_to_one:
                     change_data = self.mapping_one_to_one.get(change_index)
-                    obj = getattr(car, change_data['field'])
+                    obj = getattr(vehicle, change_data['field'])
                     data = {
                         'content_object': obj,
                         'value': row[2],
@@ -114,7 +114,7 @@ class Command(BaseCommand):
                     except model.DoesNotExist:
                         continue
                     data = {
-                        'content_object': car,
+                        'content_object': vehicle,
                         'value': obj.id,
                         'field': field,
                         'value_type': 'int'

@@ -3,9 +3,9 @@ from django.db import transaction
 from django.core.management.base import BaseCommand
 
 from configs.settings import DATA_PATH
-from cars.models import (
-    CarType, Manufacturer, Brand, CarBody,
-    CarGroup, GasolineBrand, CarClass, Color,
+from vehicles.models import (
+    VehicleType, Manufacturer, Brand, VehicleBody,
+    VehicleGroup, FuelType, VehicleClass, Color,
     MaintenanceService, Source, Warehouse
 )
 
@@ -13,13 +13,13 @@ from cars.models import (
 class Command(BaseCommand):
 
     mapping_models = {
-        'A': CarType,
+        'A': VehicleType,
         'C': Manufacturer,
         'B': Brand,
-        'D': CarBody,
-        'E': CarGroup,
-        'c': GasolineBrand,
-        'F': CarClass,
+        'D': VehicleBody,
+        'E': VehicleGroup,
+        'c': FuelType,
+        'F': VehicleClass,
         'G': Color,
         'H': MaintenanceService,
         'I': Source,

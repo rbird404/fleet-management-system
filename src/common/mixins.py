@@ -1,7 +1,8 @@
 from rest_framework.mixins import DestroyModelMixin
+from datetime import datetime
 
 
 class DeactivateModelMixin(DestroyModelMixin):
     def perform_destroy(self, instance):
-        instance.is_deleted = True
+        instance.deleted_at = datetime.now()
         instance.save()

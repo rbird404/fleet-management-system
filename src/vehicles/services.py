@@ -2,8 +2,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model, QuerySet
 from django.db.models import Q
 
-from api.exceptions import FieldNotAllowed
-from cars.models import Car
+from vehicles.exceptions import FieldNotAllowed
+from vehicles.models import Vehicle
 from history.models import History
 
 
@@ -22,7 +22,7 @@ class HistoryService:
         "register_number",
         "sign_date",
         "exploitation_date",
-        "car_class",
+        "vehicle_class",
         "color",
         "service",
         "subdivision",
@@ -38,7 +38,7 @@ class HistoryService:
         "mileage_rate",
         "fuel_rate",
         "id_number",
-        "gasoline_brand",
+        "fuel_type",
         "engine",
         "climate_control",
         "base_rate",
@@ -48,14 +48,14 @@ class HistoryService:
         "to_date",
     )
 
-    def __init__(self, car: Car):
-        self.car = car
+    def __init__(self, vehicle: Vehicle):
+        self.vehicle = vehicle
 
     def get_history_by_field(self, field: str) -> QuerySet[History]:
         if field not in self.allowed_fields:
             raise FieldNotAllowed(field=field)
 
-        value = getattr(self.car, field)
+        value = getattr(self.vehicle, field)
 
         if isinstance(value, Model):
             qs = History.objects.filter(
@@ -64,20 +64,20 @@ class HistoryService:
             )
         else:
             qs = History.objects.filter(
-                content_type=ContentType.objects.get_for_model(Car),
-                object_id=self.car.id, field=field
+                content_type=ContentType.objects.get_for_model(Vehicle),
+                object_id=self.vehicle.id, field=field
             )
 
         return qs
 
     def get_all_history(self) -> QuerySet[History]:
         query = Q(
-            content_type=ContentType.objects.get_for_model(Car),
-            object_id=self.car.id
+            content_type=ContentType.objects.get_for_model(Vehicle),
+            object_id=self.vehicle.id
         )
 
         for field in ('engine', 'waybill', 'distribution', 'passport'):
-            if obj := getattr(self.car, field):
+            if obj := getattr(self.vehicle, field):
                 query |= Q(
                     content_type=ContentType.objects.get_for_model(obj),
                     object_id=obj.id

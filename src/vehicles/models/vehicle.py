@@ -2,20 +2,20 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.contrib.contenttypes.fields import GenericRelation
 
-from cars.models.base import BaseModel
-from cars.models.distribution import Distribution
-from cars.models.engine import Engine
-from cars.models.passport import Passport
-from cars.models.subdivision import Subdivision
-from cars.models.waybill import Waybill
-from cars.models.car_items import (
-    CarBody, CarClass, CarGroup, CarType, Brand, Warehouse,
-    Manufacturer, MaintenanceService, Color, Source, GasolineBrand
+from common.models import BaseModel
+from vehicles.models.distribution import Distribution
+from vehicles.models.engine import Engine
+from vehicles.models.passport import Passport
+from vehicles.models.subdivision import Subdivision
+from vehicles.models.waybill import Waybill
+from vehicles.models.vehicle_items import (
+    VehicleBody, VehicleClass, VehicleGroup, VehicleType, Brand, Warehouse,
+    Manufacturer, MaintenanceService, Color, Source, FuelType
 )
 from history.models import History
 
 
-class Car(BaseModel):
+class Vehicle(BaseModel):
     CATEGORIES = (
         ("a", 'A'),
         ("b", 'B'),
@@ -29,7 +29,7 @@ class Car(BaseModel):
         unique=True
     )
     type = models.ForeignKey(
-        CarType,
+        VehicleType,
         verbose_name="Тип транспорта",
         on_delete=models.SET_NULL,
         null=True,
@@ -50,14 +50,14 @@ class Car(BaseModel):
         blank=True,
     )
     body = models.ForeignKey(
-        CarBody,
+        VehicleBody,
         verbose_name="Тип Кузова",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
     group = models.ForeignKey(
-        CarGroup,
+        VehicleGroup,
         verbose_name="Штатная группа",
         on_delete=models.SET_NULL,
         null=True,
@@ -110,8 +110,8 @@ class Car(BaseModel):
         null=True,
         blank=True
     )
-    car_class = models.ForeignKey(
-        CarClass,
+    vehicle_class = models.ForeignKey(
+        VehicleClass,
         db_column='class',
         verbose_name="Класс автомобиля",
         on_delete=models.SET_NULL,
@@ -216,8 +216,8 @@ class Car(BaseModel):
         null=True,
         blank=True,
     )
-    gasoline_brand = models.ForeignKey(
-        GasolineBrand,
+    fuel_type = models.ForeignKey(
+        FuelType,
         verbose_name="Марка бензина",
         on_delete=models.SET_NULL,
         null=True,
@@ -271,7 +271,7 @@ class Car(BaseModel):
     updated_at = models.DateTimeField(
         verbose_name="Дата обновления", auto_now=True
     )
-    history = GenericRelation(History, related_query_name="car")
+    history = GenericRelation(History, related_query_name="vehicle")
 
     def __str__(self):
         return f"Auto#{self.id} inv#{self.inventory_number}"

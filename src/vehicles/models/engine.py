@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import MaxValueValidator
 
-from cars.models.base import BaseModel
+from common.models import BaseModel
 from history.models import History
 
 

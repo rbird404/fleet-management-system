@@ -1,8 +1,9 @@
 from django_filters import rest_framework as filters
-from cars.models import Car
+from vehicles.models import Vehicle
+from common.filters import BaseFilterSet
 
 
-class CarFilter(filters.FilterSet):
+class VehicleFilter(BaseFilterSet):
     inventory_number = filters.NumberFilter()
     year = filters.NumberFilter()
     passport__number = filters.CharFilter()
@@ -12,7 +13,7 @@ class CarFilter(filters.FilterSet):
     exploitation_date = filters.DateFilter()
 
     class Meta:
-        model = Car
+        model = Vehicle
         fields = (
             'inventory_number',
             'year',
@@ -23,11 +24,3 @@ class CarFilter(filters.FilterSet):
             'manufacturer',
             'exploitation_date'
         )
-
-    def filter_queryset(self, queryset):
-        if (
-                not self.request.user.is_superuser
-                or not self.request.user.is_staff
-        ):
-            return queryset
-        return queryset.active()

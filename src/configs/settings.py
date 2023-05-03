@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'djoser',
     # MY APP
-    'cars',
+    'vehicles',
     'api',
     'history'
 ]

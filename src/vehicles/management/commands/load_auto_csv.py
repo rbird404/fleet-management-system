@@ -5,10 +5,10 @@ from django.db import models, transaction
 from django.core.management.base import BaseCommand
 
 from configs.settings import DATA_PATH
-from cars.models import (
-    CarType, CarBody, CarClass, CarGroup, Color, Manufacturer, Brand, Source,
-    MaintenanceService, Warehouse, Waybill, GasolineBrand, Subdivision, Engine,
-    Passport, Distribution, Car
+from vehicles.models import (
+    VehicleType, VehicleBody, VehicleClass, VehicleGroup, Color, Manufacturer, Brand, Source,
+    MaintenanceService, Warehouse, Waybill, FuelType, Subdivision, Engine,
+    Passport, Distribution, Vehicle
 )
 
 
@@ -164,7 +164,7 @@ class Command(BaseCommand):
                     'type': str,
                 }
             },
-            'model': CarType
+            'model': VehicleType
         },
         'manufacturer': {
             'fields': {
@@ -191,7 +191,7 @@ class Command(BaseCommand):
                     'type': str,
                 }
             },
-            'model': CarBody
+            'model': VehicleBody
         },
         'group': {
             'fields': {
@@ -200,16 +200,16 @@ class Command(BaseCommand):
                     'type': str,
                 }
             },
-            'model': CarGroup
+            'model': VehicleGroup
         },
-        'car_class': {
+        'vehicle_class': {
             'fields': {
                 'code': {
                     'row_index': 17,
                     'type': str,
                 }
             },
-            'model': CarClass
+            'model': VehicleClass
         },
         'color': {
             'fields': {
@@ -238,14 +238,14 @@ class Command(BaseCommand):
             },
             'model': Warehouse
         },
-        'gasoline_brand': {
+        'fuel_type': {
             'fields': {
                 'code': {
                     'row_index': 42,
                     'type': str,
                 }
             },
-            'model': GasolineBrand
+            'model': FuelType
         },
         'service': {
             'fields': {
@@ -329,11 +329,11 @@ class Command(BaseCommand):
             reader = csv.reader(auto, delimiter=',')
             next(reader)
             for row in reader:
-                car_values = {}
+                vehicle_values = {}
                 for field, data in self.mapping_fields.items():
                     value: str = row[data['row_index']]
                     type_: str | int | Decimal | date | bool = data['type']
-                    car_values[field] = self._parse_column(type_, value)
+                    vehicle_values[field] = self._parse_column(type_, value)
 
                 for field, data in self.mapping_relational_fields.items():
                     model = data['model']
@@ -343,6 +343,6 @@ class Command(BaseCommand):
                         type_: str | int | Decimal | date | bool = obj_data['type']
                         obj_values[obj_field] = self._parse_column(type_, value)
 
-                    car_values[field] = self._get_or_create(model, **obj_values)
+                    vehicle_values[field] = self._get_or_create(model, **obj_values)
 
-                Car.objects.create(**car_values)
+                Vehicle.objects.create(**vehicle_values)

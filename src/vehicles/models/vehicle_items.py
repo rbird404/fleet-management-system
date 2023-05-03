@@ -1,9 +1,9 @@
 from django.db import models
 
-from cars.models.base import BaseModel
+from common.models import BaseModel
 
 
-class CarItemBase(BaseModel):
+class VehicleItemBase(BaseModel):
     name = models.CharField(max_length=40, null=True)
     code = models.CharField(max_length=2, null=True, blank=True)
 
@@ -14,67 +14,67 @@ class CarItemBase(BaseModel):
         abstract = True
 
 
-class CarType(CarItemBase):
+class VehicleType(VehicleItemBase):
     class Meta:
         verbose_name = "Тип транспортного средства"
         verbose_name_plural = "Типы Транспортных средств"
 
 
-class Manufacturer(CarItemBase):
+class Manufacturer(VehicleItemBase):
     class Meta:
         verbose_name = "Завод Изготовитель"
         verbose_name_plural = "Заводы Изготовителя"
 
 
-class Brand(CarItemBase):
+class Brand(VehicleItemBase):
     class Meta:
         verbose_name = "Марка транспортного средства"
         verbose_name_plural = "Марки Транспортных средств"
 
 
-class CarBody(CarItemBase):
+class VehicleBody(VehicleItemBase):
     class Meta:
         verbose_name = "Тип Кузова"
         verbose_name_plural = "Тип Кузовов"
 
 
-class CarGroup(CarItemBase):
+class VehicleGroup(VehicleItemBase):
     class Meta:
         verbose_name = "Штатная группа"
         verbose_name_plural = "Штатные группы"
 
 
-class GasolineBrand(CarItemBase):
+class FuelType(VehicleItemBase):
     class Meta:
         verbose_name = "Марка Бензина"
         verbose_name_plural = "Марки бензина"
 
 
-class CarClass(CarItemBase):
+class VehicleClass(VehicleItemBase):
     class Meta:
         verbose_name = "Класс Автотранспорта"
         verbose_name_plural = "Классы Автотранспорта"
 
 
-class Color(CarItemBase):
+class Color(VehicleItemBase):
     class Meta:
         verbose_name = "Цвет Автотранспорта"
         verbose_name_plural = "Цвета Автотранспорта"
 
 
-class MaintenanceService(CarItemBase):
+class MaintenanceService(VehicleItemBase):
     class Meta:
         verbose_name = "Служба эксплуатации автомобиля"
         verbose_name_plural = "Службы эксплутации автомобиля"
 
 
-class Source(CarItemBase):
+class Source(VehicleItemBase):
     class Meta:
         verbose_name = "Организ., выдавшая наряд"
         verbose_name_plural = "Организ., выдавшая наряд"
 
 
-class Warehouse(CarItemBase):
+class Warehouse(VehicleItemBase):
     class Meta:
         verbose_name = "Склад"
         verbose_name_plural = "Склады"

@@ -1,46 +1,40 @@
 from collections import OrderedDict
 from rest_framework import serializers
 
-from cars.models import (
-    Waybill, Engine, Passport, Distribution, Car,
-    CarType, Brand, Manufacturer, CarBody, CarGroup,
-    CarClass, GasolineBrand, Color, MaintenanceService,
+from common.serializers import BaseSerializer
+from vehicles.models import (
+    Engine, Passport, Distribution, Vehicle,
+    VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,
+    VehicleClass, FuelType, Color, MaintenanceService,
     Subdivision, Source, Warehouse
 )
 from history.models import History
 
 
-class EngineSerializer(serializers.ModelSerializer):
+class EngineSerializer(BaseSerializer):
     class Meta:
         model = Engine
-        exclude = ('is_deleted',)
+        fields = '__all__'
 
 
-class WaybillSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Waybill
-        exclude = ('is_deleted',)
-
-
-class DistributionSerializer(serializers.ModelSerializer):
+class DistributionSerializer(BaseSerializer):
     class Meta:
         model = Distribution
-        exclude = ('is_deleted',)
+        fields = '__all__'
 
 
-class PassportSerializer(serializers.ModelSerializer):
+class PassportSerializer(BaseSerializer):
     class Meta:
         model = Passport
-        exclude = ('is_deleted',)
+        fields = '__all__'
 
 
-class CarCreateUpdateSerializer(serializers.ModelSerializer):
+class VehicleCreateUpdateSerializer(BaseSerializer):
     engine = EngineSerializer()
     distribution = DistributionSerializer()
     passport = PassportSerializer()
-    waybill = WaybillSerializer()
 
-    def create(self, validated_data: OrderedDict) -> Car:
+    def create(self, validated_data: OrderedDict) -> Vehicle:
         nested_fields = {}
         for field, data in validated_data.items():
             if isinstance(data, OrderedDict):
@@ -50,7 +44,7 @@ class CarCreateUpdateSerializer(serializers.ModelSerializer):
         validated_data.update(nested_fields)
         return super().create(validated_data)
 
-    def update(self, instance: Car, validated_data: OrderedDict) -> Car:
+    def update(self, instance: Vehicle, validated_data: OrderedDict) -> Vehicle:
         nested_fields = {}
         for field, value in validated_data.items():
             if isinstance(value, OrderedDict):
@@ -65,16 +59,16 @@ class CarCreateUpdateSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
     class Meta:
-        model = Car
-        exclude = ('is_deleted',)
+        model = Vehicle
+        fields = '__all__'
 
 
-class CarListSerializer(serializers.ModelSerializer):
+class VehicleListSerializer(serializers.ModelSerializer):
     brand = serializers.CharField(source="brand.name", allow_null=True)
     group = serializers.CharField(source='group.name', allow_null=True)
 
     class Meta:
-        model = Car
+        model = Vehicle
         fields = (
             'id',
             'inventory_number',
@@ -85,7 +79,10 @@ class CarListSerializer(serializers.ModelSerializer):
         )
 
 
-class CarDisplaySerializer(CarCreateUpdateSerializer, CarListSerializer):
+class VehicleDisplaySerializer(
+    VehicleCreateUpdateSerializer,
+    VehicleListSerializer
+):
     type = serializers.CharField(
         source='type.name', allow_null=True
     )
@@ -113,85 +110,85 @@ class CarDisplaySerializer(CarCreateUpdateSerializer, CarListSerializer):
     warehouse = serializers.CharField(
         source="warehouse.name", allow_null=True
     )
-    gasoline_brand = serializers.CharField(
-        source="gasoline_brand.name", allow_null=True
+    fuel_type = serializers.CharField(
+        source="fuel_type.name", allow_null=True
     )
 
     class Meta:
-        model = Car
-        exclude = ('is_deleted',)
+        model = Vehicle
+        fields = '__all__'
 
 
-class CarTypeSerializer(serializers.ModelSerializer):
+class VehicleTypeSerializer(BaseSerializer):
     class Meta:
-        model = CarType
-        exclude = ('code', 'is_deleted')
+        model = VehicleType
+        exclude = ('code',)
 
 
-class ManufacturerSerializer(serializers.ModelSerializer):
+class ManufacturerSerializer(BaseSerializer):
     class Meta:
         model = Manufacturer
-        exclude = ('code', 'is_deleted')
+        exclude = ('code',)
 
 
-class BrandSerializer(serializers.ModelSerializer):
+class BrandSerializer(BaseSerializer):
     class Meta:
         model = Brand
-        exclude = ('code', 'is_deleted')
+        exclude = ('code',)
 
 
-class CarBodySerializer(serializers.ModelSerializer):
+class VehicleBodySerializer(BaseSerializer):
     class Meta:
-        model = CarBody
-        exclude = ('code', 'is_deleted')
+        model = VehicleBody
+        exclude = ('code',)
 
 
-class CarGroupSerializer(serializers.ModelSerializer):
+class VehicleGroupSerializer(BaseSerializer):
     class Meta:
-        model = CarGroup
-        exclude = ('code', 'is_deleted')
+        model = VehicleGroup
+        exclude = ('code',)
 
 
-class GasolineBrandSerializer(serializers.ModelSerializer):
+class FuelTypeSerializer(BaseSerializer):
     class Meta:
-        model = GasolineBrand
-        exclude = ('code', 'is_deleted')
+        model = FuelType
+        exclude = ('code',)
 
 
-class CarClassSerializer(serializers.ModelSerializer):
+class VehicleClassSerializer(BaseSerializer):
     class Meta:
-        model = CarClass
-        exclude = ('code', 'is_deleted')
+        model = VehicleClass
+        exclude = ('code',)
 
 
-class ColorSerializer(serializers.ModelSerializer):
+class ColorSerializer(BaseSerializer):
     class Meta:
         model = Color
-        exclude = ('code', 'is_deleted')
+        exclude = ('code',)
 
 
-class MaintenanceServiceSerializer(serializers.ModelSerializer):
+class MaintenanceServiceSerializer(BaseSerializer):
     class Meta:
         model = MaintenanceService
-        exclude = ('code', 'is_deleted')
+        exclude = ('code',)
 
 
-class SubdivisionSerializer(serializers.ModelSerializer):
+class SubdivisionSerializer(BaseSerializer):
     class Meta:
         model = Subdivision
-        exclude = ('code', 'is_deleted')
+        exclude = ('code',)
 
 
-class SourceSerializer(serializers.ModelSerializer):
+class SourceSerializer(BaseSerializer):
     class Meta:
         model = Source
-        exclude = ('code', 'is_deleted')
+        exclude = ('code',)
 
 
-class WarehouseSerializer(serializers.ModelSerializer):
+class WarehouseSerializer(BaseSerializer):
     class Meta:
         model = Warehouse
-        exclude = ('code', 'is_deleted')
+        exclude = ('code',)
 
 
 class HistorySerializer(serializers.ModelSerializer):

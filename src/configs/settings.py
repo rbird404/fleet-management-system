@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -95,7 +95,7 @@ DATABASES = {
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 db_from_env: dict = dj_database_url.config(
-    default=DATABASE_URL, conn_max_age=500, ssl_require=True
+    default=DATABASE_URL, conn_max_age=500
 )
 DATABASES['default'].update(db_from_env)
 
@@ -157,3 +157,6 @@ SWAGGER_SETTINGS = {"DEFAULT_AUTO_SCHEMA_CLASS": "api.schema.CustomAutoSchema"}
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = '/static/'

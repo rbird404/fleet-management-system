@@ -5,11 +5,13 @@ from vehicles.views import (
     VehicleClassAPI, BrandAPI, VehicleGroupAPI,
     MaintenanceServiceAPI, ManufacturerAPI,
     FuelTypeAPI, SourceAPI, WarehouseAPI,
-    SubdivisionAPI, VehicleAPI, ImageAPI, FileAPI
+    SubdivisionAPI, VehicleAPI, ImageAPI, FileAPI, CounterAPI
 )
 
 router = routers.DefaultRouter()
 
+
+router.register("counters", CounterAPI, basename="counters")
 router.register(
     "fuel-types", FuelTypeAPI, basename="fuel-types"
 )

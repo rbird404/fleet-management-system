@@ -13,12 +13,12 @@ from vehicles.serializers import (
     FuelTypeSerializer, VehicleClassSerializer, ColorSerializer,
     MaintenanceServiceSerializer, SubdivisionSerializer,
     SourceSerializer, WarehouseSerializer, HistorySerializer,
-    VehicleFileSerializer, VehicleImageSerializer
+    VehicleFileSerializer, VehicleImageSerializer, CounterSerializer
 )
 from vehicles.models import (
     Vehicle, VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,
     VehicleClass, FuelType, Color, MaintenanceService,
-    Subdivision, Source, Warehouse, VehicleFile, VehicleImage
+    Subdivision, Source, Warehouse, VehicleFile, VehicleImage, Counter
 )
 
 
@@ -47,41 +47,51 @@ class VehicleAPI(APIViewSet):
         data = HistorySerializer(qs, many=True).data
         return Response(data=data, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['get'])
+    def statistics(self, request: Request, pk: int | None):
+        pass
+
+
+class CounterAPI(APIViewSet):
+    queryset = Counter.objects.all()
+    serializer_class = CounterSerializer
+    my_tags = ['counter']
+
 
 class ImageAPI(APIViewSet):
     queryset = VehicleImage.objects.all()
     serializer_class = VehicleImageSerializer
-    my_tags = ['vehicle-media']
+    my_tags = ['vehicle media']
 
 
 class FileAPI(APIViewSet):
     queryset = VehicleFile.objects.all()
     serializer_class = VehicleFileSerializer
-    my_tags = ['vehicle-media']
+    my_tags = ['vehicle media']
 
 
 class VehicleTypeAPI(APIViewSet):
     queryset = VehicleType.objects.all()
     serializer_class = VehicleTypeSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle types']
 
 
 class ManufacturerAPI(APIViewSet):
     queryset = Manufacturer.objects.all()
     serializer_class = ManufacturerSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle manufacturers']
 
 
 class BrandAPI(APIViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle brands']
 
 
 class VehicleBodyAPI(APIViewSet):
     queryset = VehicleBody.objects.all()
     serializer_class = VehicleBodySerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle bodies']
 
 
 class VehicleGroupAPI(APIViewSet):
@@ -93,40 +103,40 @@ class VehicleGroupAPI(APIViewSet):
 class FuelTypeAPI(APIViewSet):
     queryset = FuelType.objects.all()
     serializer_class = FuelTypeSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle fuel-types']
 
 
 class VehicleClassAPI(APIViewSet):
     queryset = VehicleClass.objects.all()
     serializer_class = VehicleClassSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle classes']
 
 
 class ColorAPI(APIViewSet):
     queryset = Color.objects.all()
     serializer_class = ColorSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle colors']
 
 
 class MaintenanceServiceAPI(APIViewSet):
     queryset = MaintenanceService.objects.all()
     serializer_class = MaintenanceServiceSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle services']
 
 
 class SubdivisionAPI(APIViewSet):
     queryset = Subdivision.objects.all()
     serializer_class = SubdivisionSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle subdivisions']
 
 
 class SourceAPI(APIViewSet):
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle sources']
 
 
 class WarehouseAPI(APIViewSet):
     queryset = Warehouse.objects.all()
     serializer_class = WarehouseSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle warehouses']

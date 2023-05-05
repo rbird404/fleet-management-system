@@ -19,7 +19,11 @@ class Vehicle(BaseModel):
         ("c", 'C'),
         ("d", 'D'),
     )
-
+    avatar = models.ImageField(
+        upload_to='images/vehicles/',
+        default='images/default.png',
+        blank=True
+    )
     inventory_number = models.PositiveIntegerField(
         verbose_name="Инвентарный номер",
         validators=[MaxValueValidator(99999)],

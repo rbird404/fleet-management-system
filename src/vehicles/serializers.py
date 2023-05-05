@@ -6,9 +6,10 @@ from vehicles.models import (
     Engine, Passport, Distribution, Vehicle,
     VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,
     VehicleClass, FuelType, Color, MaintenanceService,
-    Subdivision, Source, Warehouse, VehicleImage, VehicleFile
+    Subdivision, Source, Warehouse, VehicleImage, VehicleFile, Counter
 )
 from history.models import History
+from vehicles.validators import CounterValidator
 
 
 class VehicleImageSerializer(BaseSerializer):
@@ -84,20 +85,33 @@ class VehicleDetailSerializer(BaseSerializer):
 class VehicleListSerializer(serializers.ModelSerializer):
     brand = serializers.CharField(source="brand.name", allow_null=True)
     group = serializers.CharField(source='group.name', allow_null=True)
-    images = VehicleImageSerializer(many=True)
-    files = VehicleFileSerializer(many=True)
+    manufacturer = serializers.CharField(
+        source="manufacturer.name", allow_null=True
+    )
+    service = serializers.CharField(
+        source="service.name", allow_null=True
+    )
+    counter = serializers.SerializerMethodField(allow_null=True)
+
+    def get_counter(self, obj: Vehicle) -> int | None:
+        try:
+            return obj.counters.latest('date').value
+        except Counter.DoesNotExist:
+            return None
 
     class Meta:
         model = Vehicle
         fields = (
             'id',
+            'avatar',
             'inventory_number',
+            'manufacturer',
+            'service',
             'brand',
             'year',
             'gov_number',
             'group',
-            'images',
-            'files'
+            'counter',
         )
 
 
@@ -224,3 +238,19 @@ class HistorySerializer(serializers.ModelSerializer):
             'value',
             'created_at'
         )
+
+
+class CounterSerializer(BaseSerializer):
+    type = serializers.SerializerMethodField()
+
+    def get_type(self, obj):
+        if hasattr(obj, "fueling"):
+            return "fueling"
+        elif hasattr(obj, "issue"):
+            return "issue"
+        return "manual"
+
+    class Meta:
+        model = Counter
+        fields = '__all__'
+        validators = [CounterValidator()]

@@ -7,6 +7,7 @@ class VehicleFilter(BaseFilterSet):
     passport = filters.CharFilter(field_name='passport__number')
     sign = filters.CharFilter()
     subdivision = filters.NumberFilter(field_name='subdivision__pk')
+    manufacturer = filters.NumberFilter(field_name='manufacturer__pk')
     service = filters.NumberFilter(field_name='service__pk')
     exploitation_date = filters.DateFilter()
 

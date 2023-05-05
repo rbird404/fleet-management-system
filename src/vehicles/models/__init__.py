@@ -8,8 +8,10 @@ from vehicles.models.vehicle_items import (
 )
 from vehicles.models.vehicle import Vehicle
 from vehicles.models.media import VehicleFile, VehicleImage
+from vehicles.models.counter import Counter
 
 __all__ = (
+    'Counter',
     'VehicleFile',
     'VehicleImage',
     'Distribution',

@@ -11,11 +11,9 @@ class WaybillAPI(APIViewSet):
     my_tags = ['waybills']
 
     def get_serializer_class(self):
-        match self.action:
-            case 'list' | 'retrieve':
-                return WaybillDisplaySerializer
-            case _:
-                return WaybillDetailSerializer
+        if self.action in ('list', 'create'):
+            return WaybillDisplaySerializer
+        return WaybillDetailSerializer
 
 
 class ImageAPI(APIViewSet):

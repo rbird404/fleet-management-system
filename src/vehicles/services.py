@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model, QuerySet
 from django.db.models import Q
@@ -84,7 +86,7 @@ class HistoryService:
 
         return History.objects.filter(query)
 
-    def get_history(self, field: str | None) -> QuerySet[History]:
+    def get_history(self, field: Optional[str]) -> QuerySet[History]:
         if field is None:
             return self.get_all_history()
         return self.get_history_by_field(field)

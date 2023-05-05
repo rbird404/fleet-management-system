@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from datetime import date
 from decimal import Decimal
-from types import NoneType
 
 TYPES = {
     int: 'int',
@@ -11,7 +10,7 @@ TYPES = {
     bool: 'bool',
     Decimal: 'decimal',
     str: 'str',
-    NoneType: 'none'
+    type(None): 'none'
 }
 
 

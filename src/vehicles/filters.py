@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from vehicles.models import Vehicle
+from vehicles.models import Vehicle, Counter
 from common.filters import BaseFilterSet
 
 
@@ -23,3 +23,11 @@ class VehicleFilter(BaseFilterSet):
             'manufacturer',
             'exploitation_date'
         )
+
+
+class CounterFilter(BaseFilterSet):
+    vehicle = filters.NumberFilter(field_name='vehicle__id')
+
+    class Meta:
+        model = Counter
+        fields = ('vehicle',)

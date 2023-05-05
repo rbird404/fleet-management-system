@@ -1,4 +1,6 @@
 from collections import OrderedDict
+from typing import Optional
+
 from rest_framework import serializers
 
 from common.serializers import BaseSerializer
@@ -9,7 +11,6 @@ from vehicles.models import (
     Subdivision, Source, Warehouse, VehicleImage, VehicleFile, Counter
 )
 from history.models import History
-from vehicles.validators import CounterValidator
 
 
 class VehicleImageSerializer(BaseSerializer):
@@ -93,7 +94,7 @@ class VehicleListSerializer(serializers.ModelSerializer):
     )
     counter = serializers.SerializerMethodField(allow_null=True)
 
-    def get_counter(self, obj: Vehicle) -> int | None:
+    def get_counter(self, obj: Vehicle) -> Optional[int]:
         try:
             return obj.counters.latest('date').value
         except Counter.DoesNotExist:
@@ -253,4 +254,3 @@ class CounterSerializer(BaseSerializer):
     class Meta:
         model = Counter
         fields = '__all__'
-        validators = [CounterValidator()]

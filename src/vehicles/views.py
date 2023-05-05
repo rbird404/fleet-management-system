@@ -1,10 +1,12 @@
+from typing import Optional
+
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from vehicles.services import HistoryService
-from vehicles.filters import VehicleFilter
+from vehicles.filters import VehicleFilter, CounterFilter
 from common.views import APIViewSet
 from vehicles.serializers import (
     VehicleDetailSerializer, VehicleListSerializer,
@@ -28,18 +30,17 @@ class VehicleAPI(APIViewSet):
     my_tags = ['vehicle']
 
     def get_serializer_class(self):
-        match self.action:
-            case 'list':
-                return VehicleListSerializer
-            case 'create' | 'update':
-                return VehicleDetailSerializer
-            case 'history':
-                return HistorySerializer
-            case _:
-                return VehicleDisplaySerializer
+        if self.action == "list":
+            return VehicleListSerializer
+        elif self.action in ('create', 'update'):
+            return VehicleDetailSerializer
+        elif self.action == 'history':
+            return HistorySerializer
+
+        return VehicleDisplaySerializer
 
     @action(detail=True, methods=['get'])
-    def history(self, request: Request, pk: int | None):
+    def history(self, request: Request, pk: Optional[int]):
         vehicle: Vehicle = self.get_object()
         field: str = request.query_params.get('field')
         history_service = HistoryService(vehicle)
@@ -48,7 +49,7 @@ class VehicleAPI(APIViewSet):
         return Response(data=data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['get'])
-    def statistics(self, request: Request, pk: int | None):
+    def statistics(self, request: Request, pk: Optional[int]):
         pass
 
 
@@ -56,6 +57,7 @@ class CounterAPI(APIViewSet):
     queryset = Counter.objects.all()
     serializer_class = CounterSerializer
     my_tags = ['counter']
+    filterset_class = CounterFilter
 
 
 class ImageAPI(APIViewSet):

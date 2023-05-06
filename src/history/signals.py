@@ -22,13 +22,15 @@ def tracker_model_field_changes(sender: Model, instance, **kwargs) -> None:
         for field in (field.name for field in sender._meta.get_fields()):
             if field == 'created_at' and field == 'updated_at':
                 continue
-            current_value = getattr(current, field)
-            previous_value = getattr(previous, field)
+
+            current_value = getattr(current, field, None)
+            previous_value = getattr(previous, field, None)
+
             if current_value != previous_value:
                 if isinstance(current_value, Model):
                     current_value = current_value.pk
 
-                value_type = TYPES[type(current_value)]
+                value_type = TYPES.get(type(current_value), 'str')
 
                 History.objects.create(
                     content_object=previous,

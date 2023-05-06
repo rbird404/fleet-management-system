@@ -34,7 +34,6 @@ class Command(BaseCommand):
     }
     mapping_fields = {
         8: 'chass_number',
-        17: 'date_del',
         11: 'gov_number',
         12: 'register_number'
     }

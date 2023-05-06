@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from typing import Optional
 
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
 from common.serializers import BaseSerializer
@@ -230,10 +231,16 @@ class WarehouseSerializer(BaseSerializer):
 
 class HistorySerializer(serializers.ModelSerializer):
     content_type = serializers.CharField(source='content_type.model')
+    verbose_name = serializers.SerializerMethodField()
+
+    def get_verbose_name(self, obj):
+        model = obj.content_object._meta.model
+        return str(model._meta.get_field(obj.field).verbose_name)
 
     class Meta:
         model = History
         fields = (
+            'verbose_name',
             'content_type',
             'field',
             'value',

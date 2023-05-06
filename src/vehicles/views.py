@@ -99,7 +99,7 @@ class VehicleBodyAPI(APIViewSet):
 class VehicleGroupAPI(APIViewSet):
     queryset = VehicleGroup.objects.all()
     serializer_class = VehicleGroupSerializer
-    my_tags = ['vehicle']
+    my_tags = ['vehicle groups']
 
 
 class FuelTypeAPI(APIViewSet):

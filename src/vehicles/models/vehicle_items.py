@@ -46,8 +46,8 @@ class VehicleGroup(VehicleItemBase):
 
 class FuelType(VehicleItemBase):
     class Meta:
-        verbose_name = "Марка Бензина"
-        verbose_name_plural = "Марки бензина"
+        verbose_name = "Вид топлива"
+        verbose_name_plural = "Виды топлива"
 
 
 class VehicleClass(VehicleItemBase):

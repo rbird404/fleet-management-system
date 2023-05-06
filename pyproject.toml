@@ -5,7 +5,7 @@ description = ""
 authors = ["Timur"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 Django = "^4.2"
 djangorestframework = "^3.14.0"
 psycopg2-binary = "^2.9.6"

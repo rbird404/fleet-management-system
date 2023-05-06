@@ -77,7 +77,7 @@ class HistoryService:
             object_id=self.vehicle.id
         )
 
-        for field in ('engine', 'waybill', 'distribution', 'passport'):
+        for field in ('engine', 'distribution', 'passport'):
             if obj := getattr(self.vehicle, field):
                 query |= Q(
                     content_type=ContentType.objects.get_for_model(obj),

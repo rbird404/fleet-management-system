@@ -5,7 +5,7 @@ from common.filters import BaseFilterSet
 
 class VehicleFilter(BaseFilterSet):
     passport = filters.CharFilter(field_name='passport__number')
-    sign = filters.CharFilter()
+    gov_number = filters.CharFilter()
     subdivision = filters.NumberFilter(field_name='subdivision__pk')
     manufacturer = filters.NumberFilter(field_name='manufacturer__pk')
     service = filters.NumberFilter(field_name='service__pk')
@@ -18,7 +18,7 @@ class VehicleFilter(BaseFilterSet):
             'year',
             'passport',
             'service',
-            'sign',
+            'gov_number',
             'subdivision',
             'manufacturer',
             'exploitation_date'

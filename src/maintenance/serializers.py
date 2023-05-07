@@ -24,10 +24,11 @@ class IssueListSerializer(BaseSerializer):
 
 
 class IssueDetailSerializer(BaseSerializer):
-    vehicle = VehicleListSerializer()
+    vehicle = VehicleListSerializer(read_only=True)
     vehicle_id = serializers.PrimaryKeyRelatedField(
         queryset=Vehicle.objects.all(), source='vehicle'
     )
+    counter = CounterCreateSerializer()
 
     def create(self, validated_data):
         counter_data = validated_data.get("counter")

@@ -4,7 +4,7 @@ from rest_framework import serializers
 from fueling.models import Fueling
 from common.serializers import BaseSerializer
 from vehicles.serializers import VehicleListSerializer
-from vehicles.models import Counter, Vehicle
+from vehicles.models import Counter, Vehicle, FuelType
 
 
 class CounterCreateSerializer(BaseSerializer):
@@ -22,6 +22,10 @@ class FuelingSerializer(BaseSerializer):
         queryset=Vehicle.objects.all(), source='vehicle'
     )
     counter = CounterCreateSerializer()
+    fuel_type_name = serializers.CharField(source='fuel_type.name', read_only=True)
+    fuel_type = serializers.PrimaryKeyRelatedField(
+        queryset=FuelType.objects.all()
+    )
     vehicle_current_counter_value = serializers.SerializerMethodField()
 
     def vehicle_current_counter_value(self, obj):

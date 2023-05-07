@@ -249,6 +249,10 @@ class HistorySerializer(serializers.ModelSerializer):
 
 
 class CounterSerializer(BaseSerializer):
+    vehicle = VehicleListSerializer(read_only=True)
+    vehicle_id = serializers.PrimaryKeyRelatedField(
+        queryset=Vehicle.objects.all(), source='vehicle'
+    )
     type = serializers.SerializerMethodField()
 
     def get_type(self, obj):

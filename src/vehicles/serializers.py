@@ -116,10 +116,7 @@ class VehicleListSerializer(serializers.ModelSerializer):
         )
 
 
-class VehicleDisplaySerializer(
-    VehicleDetailSerializer,
-    VehicleListSerializer
-):
+class VehicleDisplaySerializer(BaseSerializer):
     # type = serializers.CharField(
     #     source='type.name', allow_null=True
     # )

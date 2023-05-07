@@ -1,7 +1,6 @@
 from collections import OrderedDict
 from typing import Optional
 
-from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
 from common.serializers import BaseSerializer
@@ -121,36 +120,36 @@ class VehicleDisplaySerializer(
     VehicleDetailSerializer,
     VehicleListSerializer
 ):
-    type = serializers.CharField(
-        source='type.name', allow_null=True
-    )
-    manufacturer = serializers.CharField(
-        source='manufacturer.name', allow_null=True
-    )
-    body = serializers.CharField(
-        source="body.name", allow_null=True
-    )
-    car_class = serializers.CharField(
-        source="car_class.name", allow_null=True
-    )
-    color = serializers.CharField(
-        source="color.name", allow_null=True
-    )
-    service = serializers.CharField(
-        source="service.name", allow_null=True
-    )
-    subdivision = serializers.CharField(
-        source="subdivision.name", allow_null=True
-    )
-    source = serializers.CharField(
-        source="source.name", allow_null=True
-    )
-    warehouse = serializers.CharField(
-        source="warehouse.name", allow_null=True
-    )
-    fuel_type = serializers.CharField(
-        source="fuel_type.name", allow_null=True
-    )
+    # type = serializers.CharField(
+    #     source='type.name', allow_null=True
+    # )
+    # manufacturer = serializers.CharField(
+    #     source='manufacturer.name', allow_null=True
+    # )
+    # body = serializers.CharField(
+    #     source="body.name", allow_null=True
+    # )
+    # car_class = serializers.CharField(
+    #     source="car_class.name", allow_null=True
+    # )
+    # color = serializers.CharField(
+    #     source="color.name", allow_null=True
+    # )
+    # service = serializers.CharField(
+    #     source="service.name", allow_null=True
+    # )
+    # subdivision = serializers.CharField(
+    #     source="subdivision.name", allow_null=True
+    # )
+    # source = serializers.CharField(
+    #     source="source.name", allow_null=True
+    # )
+    # warehouse = serializers.CharField(
+    #     source="warehouse.name", allow_null=True
+    # )
+    # fuel_type = serializers.CharField(
+    #     source="fuel_type.name", allow_null=True
+    # )
 
     class Meta:
         model = Vehicle

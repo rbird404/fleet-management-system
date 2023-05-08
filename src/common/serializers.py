@@ -17,6 +17,5 @@ class BaseUserSerializer(UserSerializer):
             'id',
             'first_name',
             'last_name',
-            'username',
             'email'
         )

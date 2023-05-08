@@ -33,3 +33,13 @@ class FuelCostSerializer(serializers.Serializer):
 class CostPerKilometerSerializer(serializers.Serializer):
     month = serializers.IntegerField()
     price = serializers.DecimalField(decimal_places=2, max_digits=10)
+
+
+class ExpensesCostSerializer(serializers.Serializer):
+    month = serializers.IntegerField()
+    price = serializers.DecimalField(decimal_places=2, max_digits=10)
+
+
+class ServiceCostSerializer(serializers.Serializer):
+    month = serializers.IntegerField()
+    price = serializers.DecimalField(decimal_places=2, max_digits=10)

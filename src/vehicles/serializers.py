@@ -198,7 +198,7 @@ class WarehouseSerializer(BaseSerializer):
 class HistorySerializer(serializers.ModelSerializer):
     content_type = serializers.CharField(source='content_type.model')
     verbose_name = serializers.SerializerMethodField()
-    created_at = serializers.DateTimeField(format="%Y-%m-%d")
+    created_at = serializers.DateField(format="%Y-%m-%d", allow_null=True)
 
     def get_verbose_name(self, obj):
         model = obj.content_object._meta.model

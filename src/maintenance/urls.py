@@ -1,5 +1,6 @@
-from maintenance.views import TaskAPI, RecordAPI, IssueAPI
 from rest_framework.routers import DefaultRouter
+
+from maintenance.views import TaskAPI, RecordAPI, IssueAPI
 
 router = DefaultRouter()
 

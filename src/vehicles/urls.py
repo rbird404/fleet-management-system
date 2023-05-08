@@ -5,7 +5,8 @@ from vehicles.views import (
     VehicleClassAPI, BrandAPI, VehicleGroupAPI,
     MaintenanceServiceAPI, ManufacturerAPI,
     FuelTypeAPI, SourceAPI, WarehouseAPI,
-    SubdivisionAPI, VehicleAPI, ImageAPI, FileAPI, CounterAPI
+    SubdivisionAPI, VehicleAPI, ImageAPI, FileAPI, CounterAPI,
+    ExpenseAPI, ExpenseTypeAPI
 )
 
 router = routers.DefaultRouter()
@@ -28,6 +29,11 @@ router.register("warehouses", WarehouseAPI, basename="warehouses")
 router.register("subdivisions", SubdivisionAPI, basename="subdivisions")
 router.register("images", ImageAPI, basename="vehicle-images")
 router.register("files", FileAPI, basename="vehicle-files")
+router.register("expenses", ExpenseAPI, basename='vehicle-expenses')
+router.register(
+    "expenses/types", ExpenseTypeAPI, basename='vehicle-expenses-types'
+)
 router.register("", VehicleAPI, basename='vehicles')
+
 
 urlpatterns = router.urls

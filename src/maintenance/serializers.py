@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from common.models import UserModel
 from common.serializers import BaseSerializer, BaseUserSerializer
 from fueling.serializers import CounterCreateSerializer
 from maintenance.models import Record, Issue, Task
@@ -29,6 +30,10 @@ class IssueDetailSerializer(BaseSerializer):
         queryset=Vehicle.objects.all(), source='vehicle'
     )
     counter = CounterCreateSerializer()
+    users = BaseUserSerializer(read_only=True)
+    users_id = serializers.PrimaryKeyRelatedField(
+        queryset=UserModel.objects.all(), source='users', many=True
+    )
 
     def create(self, validated_data):
         counter_data = validated_data.get("counter")
@@ -52,11 +57,24 @@ class IssueDetailSerializer(BaseSerializer):
         fields = '__all__'
 
 
-class RecordSerializer(BaseSerializer):
+class RecordDetailSerializer(BaseSerializer):
     vehicle = VehicleListSerializer(read_only=True)
     vehicle_id = serializers.PrimaryKeyRelatedField(
         queryset=Vehicle.objects.all(), source='vehicle'
     )
+
+    class Meta:
+        model = Record
+        fields = '__all__'
+
+
+class RecordListSerializer(RecordDetailSerializer):
+    vehicle = VehicleListSerializer(read_only=True)
+    vehicle_id = serializers.PrimaryKeyRelatedField(
+        queryset=Vehicle.objects.all(), source='vehicle'
+    )
+    issues = IssueListSerializer(read_only=True, many=True)
+    tasks = TaskSerializer(read_only=True, many=True)
 
     class Meta:
         model = Record

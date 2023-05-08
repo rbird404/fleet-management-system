@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from common.models import UserModel
+from djoser.serializers import UserSerializer
 
 
 class BaseSerializer(serializers.ModelSerializer):
@@ -9,11 +10,13 @@ class BaseSerializer(serializers.ModelSerializer):
     updated_at = serializers.DateTimeField(read_only=True)
 
 
-class BaseUserSerializer(serializers.ModelSerializer):
+class BaseUserSerializer(UserSerializer):
     class Meta:
         model = UserModel
         fields = (
             'id',
             'first_name',
-            'last_name'
+            'last_name',
+            'username',
+            'email'
         )

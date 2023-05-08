@@ -11,6 +11,7 @@ from vehicles.models import (
     Subdivision, Source, Warehouse, VehicleImage, VehicleFile, Counter
 )
 from history.models import History
+from vehicles.models import ExpenseType, Expense
 
 
 class VehicleImageSerializer(BaseSerializer):
@@ -117,37 +118,6 @@ class VehicleListSerializer(serializers.ModelSerializer):
 
 
 class VehicleDisplaySerializer(BaseSerializer):
-    # type = serializers.CharField(
-    #     source='type.name', allow_null=True
-    # )
-    # manufacturer = serializers.CharField(
-    #     source='manufacturer.name', allow_null=True
-    # )
-    # body = serializers.CharField(
-    #     source="body.name", allow_null=True
-    # )
-    # car_class = serializers.CharField(
-    #     source="car_class.name", allow_null=True
-    # )
-    # color = serializers.CharField(
-    #     source="color.name", allow_null=True
-    # )
-    # service = serializers.CharField(
-    #     source="service.name", allow_null=True
-    # )
-    # subdivision = serializers.CharField(
-    #     source="subdivision.name", allow_null=True
-    # )
-    # source = serializers.CharField(
-    #     source="source.name", allow_null=True
-    # )
-    # warehouse = serializers.CharField(
-    #     source="warehouse.name", allow_null=True
-    # )
-    # fuel_type = serializers.CharField(
-    #     source="fuel_type.name", allow_null=True
-    # )
-
     class Meta:
         model = Vehicle
         fields = '__all__'
@@ -261,3 +231,24 @@ class CounterSerializer(BaseSerializer):
     class Meta:
         model = Counter
         fields = '__all__'
+
+
+class ExpenseTypeSerializer(BaseSerializer):
+    class Meta:
+        model = ExpenseType
+        fields = "__all__"
+
+
+class ExpenseSerializer(BaseSerializer):
+    vehicle = VehicleListSerializer(read_only=True)
+    vehicle_id = serializers.PrimaryKeyRelatedField(
+        queryset=Vehicle.objects.all(), source='vehicle'
+    )
+
+    class Meta:
+        model = Expense
+        fields = '__all__'
+
+
+class ExpenseListSerializer(ExpenseSerializer):
+    type = ExpenseType()

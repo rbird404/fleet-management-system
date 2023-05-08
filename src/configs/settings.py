@@ -166,3 +166,9 @@ SWAGGER_SETTINGS = {
     },
     "DEFAULT_AUTO_SCHEMA_CLASS": "api.schema.CustomAutoSchema"
 }
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user': 'common.serializers.BaseUserSerializer',
+    },
+}

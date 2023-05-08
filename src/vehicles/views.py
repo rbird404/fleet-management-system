@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from vehicles.services import HistoryService
-from vehicles.filters import VehicleFilter, CounterFilter
+from vehicles.filters import VehicleFilter, CounterFilter, ExpenseFilter
 from common.views import APIViewSet
 from vehicles.serializers import (
     VehicleDetailSerializer, VehicleListSerializer,
@@ -15,12 +15,14 @@ from vehicles.serializers import (
     FuelTypeSerializer, VehicleClassSerializer, ColorSerializer,
     MaintenanceServiceSerializer, SubdivisionSerializer,
     SourceSerializer, WarehouseSerializer, HistorySerializer,
-    VehicleFileSerializer, VehicleImageSerializer, CounterSerializer
+    VehicleFileSerializer, VehicleImageSerializer, CounterSerializer,
+    ExpenseSerializer, ExpenseListSerializer, ExpenseTypeSerializer
 )
 from vehicles.models import (
     Vehicle, VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,
     VehicleClass, FuelType, Color, MaintenanceService,
-    Subdivision, Source, Warehouse, VehicleFile, VehicleImage, Counter
+    Subdivision, Source, Warehouse, VehicleFile, VehicleImage, Counter,
+    ExpenseType, Expense
 )
 
 
@@ -142,3 +144,20 @@ class WarehouseAPI(APIViewSet):
     queryset = Warehouse.objects.all()
     serializer_class = WarehouseSerializer
     my_tags = ['vehicle warehouses']
+
+
+class ExpenseTypeAPI(APIViewSet):
+    queryset = ExpenseType.objects.all()
+    serializer_class = ExpenseTypeSerializer
+    my_tags = ['expenses']
+
+
+class ExpenseAPI(APIViewSet):
+    queryset = Expense.objects.all()
+    my_tags = ['expenses']
+    filterset_class = ExpenseFilter
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ExpenseListSerializer
+        return ExpenseSerializer

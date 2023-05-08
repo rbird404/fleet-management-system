@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from vehicles.models import Vehicle, Counter
+from vehicles.models import Vehicle, Counter, Expense
 from common.filters import BaseFilterSet, NumberInFilter
 
 
@@ -32,4 +32,13 @@ class CounterFilter(BaseFilterSet):
 
     class Meta:
         model = Counter
+        fields = ('vehicle', 'date')
+
+
+class ExpenseFilter(BaseFilterSet):
+    vehicle = NumberInFilter(field_name='vehicle__id', lookup_expr='in')
+    date = filters.DateFromToRangeFilter()
+
+    class Meta:
+        model = Expense
         fields = ('vehicle', 'date')

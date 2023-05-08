@@ -1,10 +1,10 @@
-from common.filters import BaseFilterSet
+from common.filters import BaseFilterSet, NumberInFilter
 from django_filters import rest_framework as filters
 from maintenance.models import Task, Record, Issue
 
 
 class TaskFilter(BaseFilterSet):
-    vehicle = filters.NumberFilter(field_name='vehicle__id')
+    vehicle = NumberInFilter(field_name='vehicle__id')
 
     class Meta:
         model = Task
@@ -12,7 +12,7 @@ class TaskFilter(BaseFilterSet):
 
 
 class RecordFilter(BaseFilterSet):
-    vehicle = filters.NumberFilter(field_name='vehicle__id')
+    vehicle = NumberInFilter(field_name='vehicle__id')
 
     class Meta:
         model = Record
@@ -20,8 +20,9 @@ class RecordFilter(BaseFilterSet):
 
 
 class IssueFilter(BaseFilterSet):
-    vehicle = filters.NumberFilter(field_name='vehicle__id')
+    vehicle = NumberInFilter(field_name='vehicle__id')
+    date = filters.DateFromToRangeFilter()
 
     class Meta:
         model = Issue
-        fields = ('vehicle', 'status')
+        fields = ('vehicle', 'status', 'date')

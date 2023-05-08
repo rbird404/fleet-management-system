@@ -9,8 +9,12 @@ from vehicles.models.vehicle_items import (
 from vehicles.models.vehicle import Vehicle
 from vehicles.models.media import VehicleFile, VehicleImage
 from vehicles.models.counter import Counter
+from vehicles.models.expenses import ExpenseType, Expense
+
 
 __all__ = (
+    'ExpenseType',
+    'Expense',
     'Counter',
     'VehicleFile',
     'VehicleImage',

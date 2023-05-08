@@ -1,22 +1,23 @@
-from django.db.models import Max, Sum, F, Q
-from django.db.models.functions import TruncMonth, TruncYear
 from rest_framework import status
 from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from django.db.models import Max, Sum, F, Q
+from django.db.models.functions import TruncMonth, TruncYear
 
 from common.filters import BaseFilterSet
-from dashboard.serializers import (
-    VehicleCountSerializer, IssueCountSerializer, VehicleTopCounterSerializer,
-    TotalMileageSerializer, VehicleTopFuelingSerializer, FuelCostSerializer, CostPerKilometerSerializer,
-    ExpensesCostSerializer, ServiceCostSerializer
-)
 from fueling.models import Fueling
 from vehicles.models import Vehicle, Counter, Expense
 from maintenance.models import Record, Issue
-from rest_framework.response import Response
 from fueling.filters import FuelingFilter
 from vehicles.filters import CounterFilter
-
-from dashboard.filters import VehicleFilter
+from dashboard.filters import (
+    VehicleFilter, RecordFilter, ExpenseFilter
+)
+from dashboard.serializers import (
+    VehicleCountSerializer, IssueCountSerializer, VehicleTopCounterSerializer,
+    TotalMileageSerializer, VehicleTopFuelingSerializer, FuelCostSerializer,
+    CostPerKilometerSerializer, ExpensesCostSerializer, ServiceCostSerializer
+)
 
 
 class VehicleCountAPI(ListAPIView):
@@ -104,6 +105,7 @@ class VehicleTopFuelingAPI(ListAPIView):
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class FuelCostAPI(ListAPIView):
     """Затраты на топливо"""
     queryset = Fueling.objects.all()
@@ -151,6 +153,7 @@ class CostPerKilometerAPI(ListAPIView):
 class ExpensesCostAPI(ListAPIView):
     queryset = Expense.objects.all()
     serializer_class = ExpensesCostSerializer
+    filterset_class = ExpenseFilter
     my_tags = ['dashboard']
 
     def list(self, request, *args, **kwargs):
@@ -168,6 +171,7 @@ class ExpensesCostAPI(ListAPIView):
 class ServiceCostAPI(ListAPIView):
     queryset = Record.objects.all()
     serializer_class = ServiceCostSerializer
+    filterset_class = RecordFilter
     my_tags = ['dashboard']
 
     def list(self, request, *args, **kwargs):

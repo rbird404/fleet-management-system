@@ -1,10 +1,24 @@
 from django_filters.rest_framework import filters
+
 from common.filters import BaseFilterSet
-from vehicles.models import Vehicle
+from vehicles.models import Vehicle, Expense
+from maintenance.models import Record
 
 
-class CounterFilter(BaseFilterSet):
-    date = filters.DateFromToRangeFilter()
+class ExpenseFilter(BaseFilterSet):
+    date = filters.DateFromToRangeFilter(field_name='date')
+
+    class Meta:
+        model = Expense
+        fields = ('date',)
+
+
+class RecordFilter(BaseFilterSet):
+    date = filters.DateFromToRangeFilter(field_name='start_date')
+
+    class Meta:
+        model = Record
+        fields = ('date',)
 
 
 class VehicleFilter(BaseFilterSet):

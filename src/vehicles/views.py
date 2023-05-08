@@ -50,10 +50,6 @@ class VehicleAPI(APIViewSet):
         data = HistorySerializer(qs, many=True).data
         return Response(data=data, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['get'])
-    def statistics(self, request: Request, pk: Optional[int]):
-        pass
-
 
 class CounterAPI(APIViewSet):
     queryset = Counter.objects.all()

@@ -1,6 +1,5 @@
 
 from rest_framework import viewsets
-
 from common.mixins import DeactivateModelMixin
 from common.models import BaseModel
 from common.filters import BaseFilterSet

@@ -11,7 +11,8 @@ class ExpenseType(BaseModel):
 class Expense(BaseModel):
     vehicle = models.ForeignKey(
         Vehicle,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="expenses"
     )
     description = models.TextField()
     type = models.ForeignKey(

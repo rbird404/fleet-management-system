@@ -5,9 +5,9 @@ from djoser.serializers import UserSerializer
 
 class BaseSerializer(serializers.ModelSerializer):
     creator = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    deleted_at = serializers.DateTimeField(read_only=True)
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
+    deleted_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
+    created_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
+    updated_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
 
 
 class BaseUserSerializer(UserSerializer):

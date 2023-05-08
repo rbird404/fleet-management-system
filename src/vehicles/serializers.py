@@ -198,6 +198,7 @@ class WarehouseSerializer(BaseSerializer):
 class HistorySerializer(serializers.ModelSerializer):
     content_type = serializers.CharField(source='content_type.model')
     verbose_name = serializers.SerializerMethodField()
+    created_at = serializers.DateTimeField(format="%Y-%m-%d")
 
     def get_verbose_name(self, obj):
         model = obj.content_object._meta.model
@@ -220,6 +221,7 @@ class CounterSerializer(BaseSerializer):
         queryset=Vehicle.objects.all(), source='vehicle'
     )
     type = serializers.SerializerMethodField()
+    date = serializers.DateTimeField(format="%Y-%m-%d")
 
     def get_type(self, obj):
         if hasattr(obj, "fueling"):
@@ -244,6 +246,7 @@ class ExpenseSerializer(BaseSerializer):
     vehicle_id = serializers.PrimaryKeyRelatedField(
         queryset=Vehicle.objects.all(), source='vehicle'
     )
+    date = serializers.DateTimeField(format="%Y-%m-%d")
 
     class Meta:
         model = Expense

@@ -18,6 +18,8 @@ class IssueListSerializer(BaseSerializer):
     vehicle = VehicleListSerializer()
     users = BaseUserSerializer(many=True)
     counter = CounterCreateSerializer()
+    date = serializers.DateTimeField(format="%Y-%m-%d")
+    due_date = serializers.DateTimeField(format="%Y-%m-%d")
 
     class Meta:
         model = Issue
@@ -34,6 +36,8 @@ class IssueDetailSerializer(BaseSerializer):
     users_id = serializers.PrimaryKeyRelatedField(
         queryset=UserModel.objects.all(), source='users', many=True
     )
+    date = serializers.DateTimeField(format="%Y-%m-%d")
+    due_date = serializers.DateTimeField(format="%Y-%m-%d")
 
     def create(self, validated_data):
         counter_data = validated_data.get("counter")
@@ -62,6 +66,8 @@ class RecordDetailSerializer(BaseSerializer):
     vehicle_id = serializers.PrimaryKeyRelatedField(
         queryset=Vehicle.objects.all(), source='vehicle'
     )
+    start_date = serializers.DateTimeField(format="%Y-%m-%d")
+    end_date = serializers.DateTimeField(format="%Y-%m-%d")
 
     class Meta:
         model = Record

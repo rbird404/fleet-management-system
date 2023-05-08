@@ -27,6 +27,7 @@ class FuelingSerializer(BaseSerializer):
         queryset=FuelType.objects.all()
     )
     vehicle_current_counter_value = serializers.SerializerMethodField()
+    date = serializers.DateTimeField(format="%Y-%m-%d")
 
     def vehicle_current_counter_value(self, obj):
         result = Counter.objects.filter(

@@ -12,6 +12,7 @@ class WaybillDetailSerializer(BaseSerializer):
     files = serializers.PrimaryKeyRelatedField(
         queryset=File.objects.all(), required=False, many=True
     )
+    date = serializers.DateTimeField(format="%Y-%m-%d")
 
     class Meta:
         model = Waybill

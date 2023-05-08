@@ -11,7 +11,7 @@ class IssueCountSerializer(serializers.Serializer):
 
 
 class TotalMileageSerializer(serializers.Serializer):
-    month = serializers.IntegerField()
+    month = serializers.DateTimeField(format="%Y-%m-%d")
     counter = serializers.IntegerField()
 
 
@@ -22,24 +22,24 @@ class VehicleTopCounterSerializer(serializers.Serializer):
 
 class VehicleTopFuelingSerializer(serializers.Serializer):
     inv_number = serializers.IntegerField()
-    price = serializers.DecimalField(decimal_places=2, max_digits=10)
+    price = serializers.DecimalField(decimal_places=20, max_digits=100)
 
 
 class FuelCostSerializer(serializers.Serializer):
-    month = serializers.IntegerField()
-    cost = serializers.DecimalField(decimal_places=2, max_digits=10)
+    month = serializers.DateTimeField(format="%Y-%m-%d")
+    cost = serializers.DecimalField(decimal_places=20, max_digits=100)
 
 
 class CostPerKilometerSerializer(serializers.Serializer):
-    month = serializers.IntegerField()
-    price = serializers.DecimalField(decimal_places=2, max_digits=10)
+    month = serializers.DateTimeField(format="%Y-%m-%d")
+    price = serializers.DecimalField(decimal_places=20, max_digits=100)
 
 
 class ExpensesCostSerializer(serializers.Serializer):
-    month = serializers.IntegerField()
-    price = serializers.DecimalField(decimal_places=2, max_digits=10)
+    month = serializers.DateTimeField(format="%Y-%m-%d")
+    price = serializers.DecimalField(decimal_places=20, max_digits=100)
 
 
 class ServiceCostSerializer(serializers.Serializer):
-    month = serializers.IntegerField()
-    price = serializers.DecimalField(decimal_places=2, max_digits=10)
+    month = serializers.DateTimeField(format="%Y-%m-%d")
+    price = serializers.DecimalField(decimal_places=20, max_digits=100)

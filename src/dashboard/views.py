@@ -30,7 +30,9 @@ class VehicleCountAPI(ListAPIView):
         data = {
             'count': self.filter_queryset(self.get_queryset()).count()
         }
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class IssueCountAPI(ListAPIView):
@@ -45,7 +47,9 @@ class IssueCountAPI(ListAPIView):
             'open': qs.filter(status='open').count(),
             'overdue': qs.filter(status='overdue').count()
         }
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TotalMileageAPI(ListAPIView):
@@ -62,7 +66,9 @@ class TotalMileageAPI(ListAPIView):
         ).values('month').annotate(
             counter=Max('value')
         ).values('month', 'counter')
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=list(data), many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class VehicleTopCounterAPI(ListAPIView):
@@ -77,7 +83,9 @@ class VehicleTopCounterAPI(ListAPIView):
         data = qs.values(
             inv_number=F('vehicle__inventory_number')
         ).annotate(counter=Max('value'))
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=list(data), many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class VehicleTopFuelingAPI(ListAPIView):
@@ -92,8 +100,9 @@ class VehicleTopFuelingAPI(ListAPIView):
         data = qs.values(
             inv_number=F('vehicle__inventory_number')
         ).annotate(price=Sum('summ')).order_by('-price')
-        return Response(data, status=status.HTTP_200_OK)
-
+        serializer = self.get_serializer(data=list(data), many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class FuelCostAPI(ListAPIView):
     """Затраты на топливо"""
@@ -107,7 +116,9 @@ class FuelCostAPI(ListAPIView):
         data = qs.annotate(
             month=TruncMonth('date')
         ).values('month').annotate(cost=Sum('summ')).values('month', 'cost')
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=list(data), many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CostPerKilometerAPI(ListAPIView):
@@ -119,7 +130,7 @@ class CostPerKilometerAPI(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         qs = self.filter_queryset(self.get_queryset())
-        fueling = qs.annotate(
+        data = qs.annotate(
             month=TruncMonth('fueling__date'),
             year_=TruncYear('fueling__date'),
             price=Sum(F("fueling__summ")) / Max(F("counters__value"))
@@ -132,7 +143,9 @@ class CostPerKilometerAPI(ListAPIView):
         #     price=Sum(F("expenses__price")) / Max(F("counters__value"))
         # ).values('month', 'price')
 
-        return Response(fueling, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=list(data), many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ExpensesCostAPI(ListAPIView):
@@ -147,7 +160,9 @@ class ExpensesCostAPI(ListAPIView):
         ).values('month').annotate(
             price=Sum('price')
         ).values('month', 'price')
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=list(data), many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ServiceCostAPI(ListAPIView):
@@ -162,4 +177,6 @@ class ServiceCostAPI(ListAPIView):
         ).values('month').annotate(
             price=Sum('price')
         ).values('month', 'price')
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=list(data), many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

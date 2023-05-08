@@ -66,8 +66,26 @@ class RecordDetailSerializer(BaseSerializer):
     vehicle_id = serializers.PrimaryKeyRelatedField(
         queryset=Vehicle.objects.all(), source='vehicle'
     )
+    counter = CounterCreateSerializer()
     start_date = serializers.DateTimeField(format="%Y-%m-%d")
     end_date = serializers.DateTimeField(format="%Y-%m-%d")
+
+    def create(self, validated_data):
+        counter_data = validated_data.get("counter")
+        counter = Counter.objects.create(
+            vehicle=validated_data.get("vehicle"),
+            date=validated_data.get("start_date"),
+            **counter_data,
+        )
+        validated_data['counter'] = counter
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        counter = instance.counter
+        counter.value = validated_data.get("counter").get('value')
+        counter.save()
+        validated_data['counter'] = counter
+        return super().update(instance, validated_data)
 
     class Meta:
         model = Record
@@ -79,6 +97,7 @@ class RecordListSerializer(RecordDetailSerializer):
     vehicle_id = serializers.PrimaryKeyRelatedField(
         queryset=Vehicle.objects.all(), source='vehicle'
     )
+
     issues = IssueListSerializer(read_only=True, many=True)
     tasks = TaskSerializer(read_only=True, many=True)
 

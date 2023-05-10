@@ -1,19 +1,14 @@
 from common.views import APIViewSet
 from waybills.models import Waybill, Image, File
 from waybills.serializers import (
-    WaybillDetailSerializer, ImageSerializer, FileSerializer,
-    WaybillDisplaySerializer
+    WaybillSerializer, ImageSerializer, FileSerializer,
 )
 
 
 class WaybillAPI(APIViewSet):
     queryset = Waybill.objects.all()
+    serializer_class = WaybillSerializer
     my_tags = ['waybills']
-
-    def get_serializer_class(self):
-        if self.action in ('list', 'create'):
-            return WaybillDisplaySerializer
-        return WaybillDetailSerializer
 
 
 class ImageAPI(APIViewSet):

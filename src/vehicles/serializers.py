@@ -254,4 +254,8 @@ class ExpenseSerializer(BaseSerializer):
 
 
 class ExpenseListSerializer(ExpenseSerializer):
-    type = ExpenseType()
+    type = serializers.CharField(source='type.name', allow_null=True)
+
+    class Meta:
+        model = Expense
+        fields = '__all__'

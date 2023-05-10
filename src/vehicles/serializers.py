@@ -118,6 +118,10 @@ class VehicleListSerializer(serializers.ModelSerializer):
 
 
 class VehicleDisplaySerializer(BaseSerializer):
+    engine = EngineSerializer()
+    distribution = DistributionSerializer()
+    passport = PassportSerializer()
+
     class Meta:
         model = Vehicle
         fields = '__all__'

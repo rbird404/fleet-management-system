@@ -34,7 +34,6 @@ class Engine(BaseModel):
     )
     history = GenericRelation(History, related_query_name="engine")
 
-
     def __str__(self) -> str:
         return f"{self.number} {self.model}"
 

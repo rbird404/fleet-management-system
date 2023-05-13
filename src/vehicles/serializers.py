@@ -65,7 +65,9 @@ class VehicleDetailSerializer(BaseSerializer):
         validated_data.update(nested_fields)
         return super().create(validated_data)
 
-    def update(self, instance: Vehicle, validated_data: OrderedDict) -> Vehicle:
+    def update(
+            self, instance: Vehicle, validated_data: OrderedDict
+    ) -> Vehicle:
         nested_fields = {}
         for field, value in validated_data.items():
             if isinstance(value, OrderedDict):
@@ -263,3 +265,12 @@ class ExpenseListSerializer(ExpenseSerializer):
     class Meta:
         model = Expense
         fields = '__all__'
+
+
+class CounterCreateSerializer(BaseSerializer):
+    id = serializers.IntegerField(read_only=True)
+    value = serializers.IntegerField()
+
+    class Meta:
+        model = Counter
+        fields = ('id', 'value')

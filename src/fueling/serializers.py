@@ -5,15 +5,7 @@ from fueling.models import Fueling
 from common.serializers import BaseSerializer
 from vehicles.serializers import VehicleListSerializer
 from vehicles.models import Counter, Vehicle, FuelType
-
-
-class CounterCreateSerializer(BaseSerializer):
-    id = serializers.IntegerField(read_only=True)
-    value = serializers.IntegerField()
-
-    class Meta:
-        model = Counter
-        fields = ('id', 'value')
+from vehicles.serializers import CounterCreateSerializer
 
 
 class FuelingSerializer(BaseSerializer):
@@ -22,14 +14,16 @@ class FuelingSerializer(BaseSerializer):
         queryset=Vehicle.objects.all(), source='vehicle'
     )
     counter = CounterCreateSerializer()
-    fuel_type_name = serializers.CharField(source='fuel_type.name', read_only=True)
+    fuel_type_name = serializers.CharField(
+        source='fuel_type.name', read_only=True
+    )
     fuel_type = serializers.PrimaryKeyRelatedField(
         queryset=FuelType.objects.all()
     )
-    vehicle_current_counter_value = serializers.SerializerMethodField()
+    current_counter = serializers.SerializerMethodField()
     date = serializers.DateTimeField(format="%Y-%m-%d")
 
-    def vehicle_current_counter_value(self, obj):
+    def get_current_counter(self, obj):
         result = Counter.objects.filter(
             vehicle=obj.vehicle
         ).aggregate(Max('value'))
@@ -47,7 +41,9 @@ class FuelingSerializer(BaseSerializer):
 
     def update(self, instance, validated_data):
         counter = instance.counter
-        counter.value = validated_data.get("counter").get('value')
+        counter_data = validated_data.get("counter")
+        for attr, value in counter_data.items():
+            setattr(counter, attr, value)
         counter.save()
         validated_data['counter'] = counter
         return super().update(instance, validated_data)

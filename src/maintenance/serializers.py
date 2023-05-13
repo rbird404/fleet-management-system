@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from common.models import UserModel
 from common.serializers import BaseSerializer, BaseUserSerializer
-from fueling.serializers import CounterCreateSerializer
+from vehicles.serializers import CounterCreateSerializer
 from maintenance.models import Record, Issue, Task
 from vehicles.models import Vehicle, Counter
 from vehicles.serializers import VehicleListSerializer
@@ -51,8 +51,9 @@ class IssueDetailSerializer(BaseSerializer):
 
     def update(self, instance, validated_data):
         counter = instance.counter
-        counter.value = validated_data.get("counter").get('value')
-        counter.save()
+        counter_data = validated_data.get("counter")
+        for attr, value in counter_data.items():
+            setattr(counter, attr, value)
         validated_data['counter'] = counter
         return super().update(instance, validated_data)
 
@@ -82,8 +83,9 @@ class RecordDetailSerializer(BaseSerializer):
 
     def update(self, instance, validated_data):
         counter = instance.counter
-        counter.value = validated_data.get("counter").get('value')
-        counter.save()
+        counter_data = validated_data.get("counter")
+        for attr, value in counter_data.items():
+            setattr(counter, attr, value)
         validated_data['counter'] = counter
         return super().update(instance, validated_data)
 

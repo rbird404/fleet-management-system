@@ -139,7 +139,7 @@ class CostPerKilometerAPI(ListAPIView):
         ).exclude(
             Q(month=None) | Q(price=None)
         ).values('month', 'price')
-
+        # TODO добавить учет доп расходов
         # expenses = qs.annotate(
         #     month=TruncMonth('expenses__date'),
         #     price=Sum(F("expenses__price")) / Max(F("counters__value"))

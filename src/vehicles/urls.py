@@ -13,9 +13,6 @@ router = routers.DefaultRouter()
 
 
 router.register("counters", CounterAPI, basename="counters")
-router.register(
-    "fuel-types", FuelTypeAPI, basename="fuel-types"
-)
 router.register("types", VehicleTypeAPI, basename='vehicle-types')
 router.register("bodies", VehicleBodyAPI, basename='vehicle-bodies')
 router.register("colors", ColorAPI, basename='vehicle-colors')
@@ -32,6 +29,9 @@ router.register("files", FileAPI, basename="vehicle-files")
 router.register("expenses", ExpenseAPI, basename='vehicle-expenses')
 router.register(
     "expenses-types", ExpenseTypeAPI, basename='vehicle-expenses-types'
+)
+router.register(
+    "fuel-types", FuelTypeAPI, basename="fuel-types"
 )
 router.register("", VehicleAPI, basename='vehicles')
 

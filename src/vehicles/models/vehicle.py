@@ -264,5 +264,5 @@ class Vehicle(BaseModel):
         return f"Auto#{self.id} inv#{self.inventory_number}"
 
     class Meta:
-        verbose_name = "Автомобиль"
-        verbose_name_plural = "Автомобили"
+        verbose_name = "Транспортное средство"
+        verbose_name_plural = "Транспортные средства"

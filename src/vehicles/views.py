@@ -9,11 +9,10 @@ from vehicles.services import HistoryService
 from vehicles.filters import VehicleFilter, CounterFilter, ExpenseFilter
 from common.views import APIViewSet
 from vehicles.serializers import (
-    VehicleDetailSerializer, VehicleListSerializer,
-    VehicleDisplaySerializer, VehicleTypeSerializer, ManufacturerSerializer,
-    BrandSerializer, VehicleBodySerializer, VehicleGroupSerializer,
-    FuelTypeSerializer, VehicleClassSerializer, ColorSerializer,
-    MaintenanceServiceSerializer, SubdivisionSerializer,
+    VehicleDetailSerializer, VehicleListSerializer, VehicleTypeSerializer,
+    ManufacturerSerializer, BrandSerializer, VehicleBodySerializer,
+    VehicleGroupSerializer, FuelTypeSerializer, VehicleClassSerializer,
+    ColorSerializer, MaintenanceServiceSerializer, SubdivisionSerializer,
     SourceSerializer, WarehouseSerializer, HistorySerializer,
     VehicleFileSerializer, VehicleImageSerializer, CounterSerializer,
     ExpenseSerializer, ExpenseListSerializer, ExpenseTypeSerializer
@@ -34,12 +33,10 @@ class VehicleAPI(APIViewSet):
     def get_serializer_class(self):
         if self.action == "list":
             return VehicleListSerializer
-        elif self.action in ('create', 'update'):
-            return VehicleDetailSerializer
         elif self.action == 'history':
             return HistorySerializer
 
-        return VehicleDisplaySerializer
+        return VehicleDetailSerializer
 
     @action(detail=True, methods=['get'])
     def history(self, request: Request, pk: Optional[int]):

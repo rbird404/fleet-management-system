@@ -1,19 +1,16 @@
-from typing import Optional
-
+from django.db import models
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from common.serializers import BaseSerializer
 from vehicles.services import HistoryService
 from vehicles.filters import VehicleFilter, CounterFilter, ExpenseFilter
 from common.views import APIViewSet
 from vehicles.serializers import (
-    VehicleDetailSerializer, VehicleListSerializer, VehicleTypeSerializer,
-    ManufacturerSerializer, BrandSerializer, VehicleBodySerializer,
-    VehicleGroupSerializer, FuelTypeSerializer, VehicleClassSerializer,
-    ColorSerializer, MaintenanceServiceSerializer, SubdivisionSerializer,
-    SourceSerializer, WarehouseSerializer, HistorySerializer,
+    VehicleDetailSerializer, VehicleListSerializer, HistorySerializer,
     VehicleFileSerializer, VehicleImageSerializer, CounterSerializer,
     ExpenseSerializer, ExpenseListSerializer, ExpenseTypeSerializer
 )
@@ -39,7 +36,7 @@ class VehicleAPI(APIViewSet):
         return VehicleDetailSerializer
 
     @action(detail=True, methods=['get'])
-    def history(self, request: Request, pk: Optional[int]):
+    def history(self, request: Request, pk: int):
         vehicle: Vehicle = self.get_object()
         field: str = request.query_params.get('field')
         history_service = HistoryService(vehicle)
@@ -67,78 +64,6 @@ class FileAPI(APIViewSet):
     my_tags = ['vehicle media']
 
 
-class VehicleTypeAPI(APIViewSet):
-    queryset = VehicleType.objects.all()
-    serializer_class = VehicleTypeSerializer
-    my_tags = ['vehicle types']
-
-
-class ManufacturerAPI(APIViewSet):
-    queryset = Manufacturer.objects.all()
-    serializer_class = ManufacturerSerializer
-    my_tags = ['vehicle manufacturers']
-
-
-class BrandAPI(APIViewSet):
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
-    my_tags = ['vehicle brands']
-
-
-class VehicleBodyAPI(APIViewSet):
-    queryset = VehicleBody.objects.all()
-    serializer_class = VehicleBodySerializer
-    my_tags = ['vehicle bodies']
-
-
-class VehicleGroupAPI(APIViewSet):
-    queryset = VehicleGroup.objects.all()
-    serializer_class = VehicleGroupSerializer
-    my_tags = ['vehicle groups']
-
-
-class FuelTypeAPI(APIViewSet):
-    queryset = FuelType.objects.all()
-    serializer_class = FuelTypeSerializer
-    my_tags = ['vehicle fuel-types']
-
-
-class VehicleClassAPI(APIViewSet):
-    queryset = VehicleClass.objects.all()
-    serializer_class = VehicleClassSerializer
-    my_tags = ['vehicle classes']
-
-
-class ColorAPI(APIViewSet):
-    queryset = Color.objects.all()
-    serializer_class = ColorSerializer
-    my_tags = ['vehicle colors']
-
-
-class MaintenanceServiceAPI(APIViewSet):
-    queryset = MaintenanceService.objects.all()
-    serializer_class = MaintenanceServiceSerializer
-    my_tags = ['vehicle services']
-
-
-class SubdivisionAPI(APIViewSet):
-    queryset = Subdivision.objects.all()
-    serializer_class = SubdivisionSerializer
-    my_tags = ['vehicle subdivisions']
-
-
-class SourceAPI(APIViewSet):
-    queryset = Source.objects.all()
-    serializer_class = SourceSerializer
-    my_tags = ['vehicle sources']
-
-
-class WarehouseAPI(APIViewSet):
-    queryset = Warehouse.objects.all()
-    serializer_class = WarehouseSerializer
-    my_tags = ['vehicle warehouses']
-
-
 class ExpenseTypeAPI(APIViewSet):
     queryset = ExpenseType.objects.all()
     serializer_class = ExpenseTypeSerializer
@@ -154,3 +79,50 @@ class ExpenseAPI(APIViewSet):
         if self.action == 'list':
             return ExpenseListSerializer
         return ExpenseSerializer
+
+
+class ModelAPI(APIViewSet):
+    mapping = {
+        "types": VehicleType,
+        "manufacturers": Manufacturer,
+        "brands": Brand,
+        "bodies": VehicleBody,
+        "groups": VehicleGroup,
+        "fuel-types": FuelType,
+        "classes": VehicleClass,
+        "colors": Color,
+        "services": MaintenanceService,
+        "subdivisions": Subdivision,
+        "sources": Source,
+        "warehouses": Warehouse,
+    }
+
+    def get_queryset(self):
+        return self.get_model().objects.all()
+
+    def get_serializer_class(self):
+        model = self.get_model()
+        return self.create_serializer_class(model, exclude=('code',))
+
+    def get_model(self) -> models.Model:
+        path: str = self.kwargs.get("path")
+        model: models.Model = self.mapping.get(path)
+        if model is not None:
+            return model
+        raise NotFound
+
+    @staticmethod
+    def create_serializer_class(
+            model: models.Model,
+            *,
+            fields: str | list = None,
+            exclude: tuple[str] = None
+    ):
+        meta_data = {"model": model}
+        if fields is not None:
+            meta_data["fields"] = fields
+        elif exclude is not None:
+            meta_data["exclude"] = exclude
+
+        meta_class = type("Meta", (), meta_data)
+        return type(f"{model.__name__}Serializer", (BaseSerializer,), {"Meta": meta_class})

@@ -1,14 +1,11 @@
 from collections import OrderedDict
 from typing import Optional
-
 from rest_framework import serializers
 
 from common.serializers import BaseSerializer
 from vehicles.models import (
     Engine, Passport, Distribution, Vehicle,
-    VehicleType, Brand, Manufacturer, VehicleBody, VehicleGroup,
-    VehicleClass, FuelType, Color, MaintenanceService,
-    Subdivision, Source, Warehouse, VehicleImage, VehicleFile, Counter
+    VehicleImage, VehicleFile, Counter
 )
 from history.models import History
 from vehicles.models import ExpenseType, Expense
@@ -127,78 +124,6 @@ class VehicleDisplaySerializer(BaseSerializer):
     class Meta:
         model = Vehicle
         fields = '__all__'
-
-
-class VehicleTypeSerializer(BaseSerializer):
-    class Meta:
-        model = VehicleType
-        exclude = ('code',)
-
-
-class ManufacturerSerializer(BaseSerializer):
-    class Meta:
-        model = Manufacturer
-        exclude = ('code',)
-
-
-class BrandSerializer(BaseSerializer):
-    class Meta:
-        model = Brand
-        exclude = ('code',)
-
-
-class VehicleBodySerializer(BaseSerializer):
-    class Meta:
-        model = VehicleBody
-        exclude = ('code',)
-
-
-class VehicleGroupSerializer(BaseSerializer):
-    class Meta:
-        model = VehicleGroup
-        exclude = ('code',)
-
-
-class FuelTypeSerializer(BaseSerializer):
-    class Meta:
-        model = FuelType
-        exclude = ('code',)
-
-
-class VehicleClassSerializer(BaseSerializer):
-    class Meta:
-        model = VehicleClass
-        exclude = ('code',)
-
-
-class ColorSerializer(BaseSerializer):
-    class Meta:
-        model = Color
-        exclude = ('code',)
-
-
-class MaintenanceServiceSerializer(BaseSerializer):
-    class Meta:
-        model = MaintenanceService
-        exclude = ('code',)
-
-
-class SubdivisionSerializer(BaseSerializer):
-    class Meta:
-        model = Subdivision
-        exclude = ('code',)
-
-
-class SourceSerializer(BaseSerializer):
-    class Meta:
-        model = Source
-        exclude = ('code',)
-
-
-class WarehouseSerializer(BaseSerializer):
-    class Meta:
-        model = Warehouse
-        exclude = ('code',)
 
 
 class HistorySerializer(serializers.ModelSerializer):

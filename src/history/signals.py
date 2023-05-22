@@ -2,13 +2,12 @@ from django.db.models.signals import pre_save
 from django.db.models import Model
 
 from history.models import History, TYPES
-from cars.models import Car, Engine, Distribution, Waybill, Passport
+from vehicles.models import Vehicle, Engine, Distribution, Passport
 
 __all__ = (
-    'car_changes_tracker',
+    'vehicle_changes_tracker',
     'engine_changes_tracker',
     'distribution_changes_tracker',
-    'waybill_changes_tracker',
     'passport_changes_tracker'
 )
 
@@ -23,13 +22,15 @@ def tracker_model_field_changes(sender: Model, instance, **kwargs) -> None:
         for field in (field.name for field in sender._meta.get_fields()):
             if field == 'created_at' and field == 'updated_at':
                 continue
-            current_value = getattr(current, field)
-            previous_value = getattr(previous, field)
+
+            current_value = getattr(current, field, None)
+            previous_value = getattr(previous, field, None)
+
             if current_value != previous_value:
                 if isinstance(current_value, Model):
                     current_value = current_value.pk
 
-                value_type = TYPES[type(current_value)]
+                value_type = TYPES.get(type(current_value), 'str')
 
                 History.objects.create(
                     content_object=previous,
@@ -39,17 +40,14 @@ def tracker_model_field_changes(sender: Model, instance, **kwargs) -> None:
                 )
 
 
-car_changes_tracker = pre_save.connect(
-    tracker_model_field_changes, sender=Car
+vehicle_changes_tracker = pre_save.connect(
+    tracker_model_field_changes, sender=Vehicle
 )
 engine_changes_tracker = pre_save.connect(
     tracker_model_field_changes, sender=Engine
 )
 distribution_changes_tracker = pre_save.connect(
     tracker_model_field_changes, sender=Distribution
-)
-waybill_changes_tracker = pre_save.connect(
-    tracker_model_field_changes, sender=Waybill
 )
 passport_changes_tracker = pre_save.connect(
     tracker_model_field_changes, sender=Passport

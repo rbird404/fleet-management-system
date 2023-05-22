@@ -1,8 +1,5 @@
 from django.contrib import admin
 
-from django.apps import apps
+from history.models import History
 
-app = apps.get_app_config('history')
-
-for model_name, model in app.models.items():
-    admin.site.register(model)
+admin.site.register(History)

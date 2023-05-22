@@ -22,11 +22,11 @@ class Vehicle(BaseModel):
     avatar = models.ImageField(
         upload_to='images/vehicles/',
         default='images/default.png',
-        blank=True
+        blank=True,
+        verbose_name="Фото"
     )
     inventory_number = models.PositiveIntegerField(
         verbose_name="Инвентарный номер",
-        validators=[MaxValueValidator(99999)],
         unique=True
     )
     type = models.ForeignKey(
@@ -261,7 +261,7 @@ class Vehicle(BaseModel):
     )
 
     def __str__(self):
-        return f"Auto#{self.id} inv#{self.inventory_number}"
+        return f"ТС #{self.id} Инв. номер #{self.inventory_number}"
 
     class Meta:
         verbose_name = "Транспортное средство"

@@ -5,7 +5,7 @@ from common.models import BaseModel
 
 
 class Subdivision(BaseModel):
-    code = models.CharField(max_length=4)
+    code = models.CharField(max_length=4, verbose_name="Код")
     name = models.CharField(
         verbose_name="Название Подразделения",
         max_length=35,

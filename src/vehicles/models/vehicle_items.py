@@ -4,8 +4,8 @@ from common.models import BaseModel
 
 
 class VehicleItemBase(BaseModel):
-    name = models.CharField(max_length=40, null=True)
-    code = models.CharField(max_length=2, null=True, blank=True)
+    name = models.CharField(max_length=40, null=True, verbose_name="Название")
+    code = models.CharField(max_length=2, null=True, blank=True, verbose_name="Код")
 
     def __str__(self) -> str:
         return str(self.name)

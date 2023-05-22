@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
-
 from common.models import BaseModel
 from history.models import History
 

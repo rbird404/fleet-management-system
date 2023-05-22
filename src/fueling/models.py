@@ -8,12 +8,14 @@ class Fueling(BaseModel):
     vehicle = models.ForeignKey(
         Vehicle,
         on_delete=models.CASCADE,
-        related_name="fueling"
+        related_name="fueling",
+        verbose_name="ТС"
     )
     counter = models.OneToOneField(
         Counter,
         on_delete=models.CASCADE,
-        related_name="fueling"
+        related_name="fueling",
+        verbose_name="Счетчик"
     )
     fuel_type = models.ForeignKey(
         FuelType,
@@ -21,7 +23,7 @@ class Fueling(BaseModel):
         on_delete=models.SET_NULL,
         null=True
     )
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    summ = models.DecimalField(max_digits=10, decimal_places=2)
-    liters = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateTimeField()
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена за литр")
+    summ = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Стоимость")
+    liters = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Объем")
+    date = models.DateTimeField(verbose_name="Дата")

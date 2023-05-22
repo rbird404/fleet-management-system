@@ -27,9 +27,9 @@ class History(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
-    field = models.CharField(max_length=32)
-    value = models.TextField(null=True, blank=True)
-    value_type = models.CharField(choices=TYPES, max_length=8)
+    field = models.CharField(max_length=32, verbose_name="Поле")
+    value = models.TextField(null=True, blank=True, verbose_name="Значение")
+    value_type = models.CharField(choices=TYPES, max_length=8, verbose_name="Тип Значения")
     created_at = models.DateField(
         verbose_name="Дата ввода", null=True
     )

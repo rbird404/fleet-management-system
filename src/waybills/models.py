@@ -34,15 +34,25 @@ class Image(BaseModel):
     waybill = models.ManyToManyField(
         Waybill,
         blank=True,
-        related_name='images'
+        related_name='images',
+        verbose_name="Накладные"
     )
     image = models.ImageField(upload_to='images/waybills/')
+
+    class Meta:
+        verbose_name = "Фотография"
+        verbose_name_plural = "Фотографии"
 
 
 class File(BaseModel):
     waybill = models.ManyToManyField(
         Waybill,
         blank=True,
-        related_name='files'
+        related_name='files',
+        verbose_name="Накладные"
     )
     file = models.FileField(upload_to='files/waybills/')
+
+    class Meta:
+        verbose_name = "Файл"
+        verbose_name_plural = "Файлы"

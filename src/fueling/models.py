@@ -27,3 +27,7 @@ class Fueling(BaseModel):
     summ = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Стоимость")
     liters = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Объем")
     date = models.DateTimeField(verbose_name="Дата")
+
+    class Meta:
+        verbose_name = "Заправка"
+        verbose_name_plural = "Заправки"

@@ -1,8 +1,19 @@
 from django.contrib import admin
 
-from django.apps import apps
+from vehicles.models import (
+    Color, Counter, Vehicle,
+    Passport, Engine, Expense,
+    ExpenseType, FuelType, Subdivision, Distribution
+)
 
-app = apps.get_app_config('vehicles')
-
-for model_name, model in app.models.items():
-    admin.site.register(model)
+admin.site.register(Vehicle)
+admin.site.register(Counter)
+admin.site.register(FuelType)
+admin.site.register(Subdivision)
+admin.site.register(Expense)
+admin.site.register(ExpenseType)
+admin.site.register(Passport)
+admin.site.register(Engine)
+admin.site.register(Distribution)
+admin.site.register(Color)
+admin.site.register(Color)

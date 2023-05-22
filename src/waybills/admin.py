@@ -1,8 +1,7 @@
 from django.contrib import admin
 
-from django.apps import apps
+from waybills.models import Waybill, Image, File
 
-app = apps.get_app_config('waybills')
-
-for model_name, model in app.models.items():
-    admin.site.register(model)
+admin.site.register(Waybill)
+admin.site.register(Image)
+admin.site.register(File)

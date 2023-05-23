@@ -131,17 +131,6 @@ python-versions = ">=3.7"
 Django = ">=3.2"
 
 [[package]]
-name = "django-jet-reboot"
-version = "1.3.3"
-description = "Modern template for Django admin interface with improved functionality"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-Django = "*"
-
-[[package]]
 name = "django-templated-mail"
 version = "1.1.1"
 description = "Send emails using Django template system."
@@ -462,14 +451,6 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
-name = "six"
-version = "1.16.0"
-description = "Python 2 and 3 compatibility utilities"
-category = "main"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-
-[[package]]
 name = "social-auth-app-django"
 version = "5.2.0"
 description = "Python Social Authentication, Django integration."
@@ -559,7 +540,7 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "e6a69e00a7bb3b50042e88bd038f59ffdd20db9e253652fe00ecc8e8e625400e"
+content-hash = "6b2f4320ce01a8ca1cf57968a719068debfda3cee23d276c42ea41f84e000f1e"
 
 [metadata.files]
 asgiref = []
@@ -573,7 +554,6 @@ defusedxml = []
 dj-database-url = []
 django = []
 django-filter = []
-django-jet-reboot = []
 django-templated-mail = []
 djangorestframework = []
 djangorestframework-simplejwt = []
@@ -601,7 +581,6 @@ requests = []
 requests-oauthlib = []
 "ruamel.yaml" = []
 "ruamel.yaml.clib" = []
-six = []
 social-auth-app-django = []
 social-auth-core = []
 sqlparse = []

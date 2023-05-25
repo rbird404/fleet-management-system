@@ -14,7 +14,7 @@ class ExpenseFilter(BaseFilterSet):
 
 
 class RecordFilter(BaseFilterSet):
-    date = filters.DateFromToRangeFilter(field_name='start_date')
+    date = filters.DateFromToRangeFilter(field_name='end_date')
 
     class Meta:
         model = Record

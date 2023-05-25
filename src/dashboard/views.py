@@ -1,8 +1,6 @@
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from django.db.models import Max, Sum, F, Q
-from django.db.models.functions import TruncMonth, TruncYear
 
 from common.filters import BaseFilterSet
 from fueling.models import Fueling
@@ -18,6 +16,7 @@ from dashboard.serializers import (
     TotalMileageSerializer, VehicleTopFuelingSerializer, FuelCostSerializer,
     CostPerKilometerSerializer, ExpensesCostSerializer, ServiceCostSerializer
 )
+from dashboard import services
 
 
 class VehicleCountAPI(ListAPIView):
@@ -62,12 +61,8 @@ class TotalMileageAPI(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         qs = self.filter_queryset(self.get_queryset())
-        data = qs.annotate(
-            month=TruncMonth('date')
-        ).values('month').annotate(
-            counter=Max('value')
-        ).values('month', 'counter')
-        serializer = self.get_serializer(data=list(data), many=True)
+        data = services.get_total_mileage(qs)
+        serializer = self.get_serializer(data=data, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -81,10 +76,8 @@ class VehicleTopCounterAPI(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         qs = self.filter_queryset(self.get_queryset())
-        data = qs.values(
-            inv_number=F('vehicle__inventory_number')
-        ).annotate(counter=Max('value'))
-        serializer = self.get_serializer(data=list(data), many=True)
+        data = services.get_vehicle_top_counters(qs)
+        serializer = self.get_serializer(data=data, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -98,10 +91,8 @@ class VehicleTopFuelingAPI(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         qs = self.filter_queryset(self.get_queryset())
-        data = qs.values(
-            inv_number=F('vehicle__inventory_number')
-        ).annotate(price=Sum('summ')).order_by('-price')
-        serializer = self.get_serializer(data=list(data), many=True)
+        data = services.get_vehicle_top_fueling(qs)
+        serializer = self.get_serializer(data=data, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -115,10 +106,8 @@ class FuelCostAPI(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         qs = self.filter_queryset(self.get_queryset())
-        data = qs.annotate(
-            month=TruncMonth('date')
-        ).values('month').annotate(cost=Sum('summ')).values('month', 'cost')
-        serializer = self.get_serializer(data=list(data), many=True)
+        data = services.get_fuel_cost(qs)
+        serializer = self.get_serializer(data=data, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -131,21 +120,11 @@ class CostPerKilometerAPI(ListAPIView):
     my_tags = ['dashboard']
 
     def list(self, request, *args, **kwargs):
+        date_after = request.query_params.get('date_after')
+        date_before = request.query_params.get('date_before')
         qs = self.filter_queryset(self.get_queryset())
-        data = qs.annotate(
-            month=TruncMonth('fueling__date'),
-            year_=TruncYear('fueling__date'),
-            price=Sum(F("fueling__summ")) / Max(F("counters__value"))
-        ).exclude(
-            Q(month=None) | Q(price=None)
-        ).values('month', 'price')
-        # TODO добавить учет доп расходов
-        # expenses = qs.annotate(
-        #     month=TruncMonth('expenses__date'),
-        #     price=Sum(F("expenses__price")) / Max(F("counters__value"))
-        # ).values('month', 'price')
-
-        serializer = self.get_serializer(data=list(data), many=True)
+        data = services.get_cost_per_kilometer(qs, date_after, date_before)
+        serializer = self.get_serializer(data=data, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -158,12 +137,8 @@ class ExpensesCostAPI(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         qs = self.filter_queryset(self.get_queryset())
-        data = qs.annotate(
-            month=TruncMonth('date')
-        ).values('month').annotate(
-            price=Sum('price')
-        ).values('month', 'price')
-        serializer = self.get_serializer(data=list(data), many=True)
+        data = services.get_expenses_cost(qs)
+        serializer = self.get_serializer(data=data, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -176,11 +151,7 @@ class ServiceCostAPI(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         qs = self.filter_queryset(self.get_queryset())
-        data = qs.annotate(
-            month=TruncMonth('start_date')
-        ).values('month').annotate(
-            price=Sum('price')
-        ).values('month', 'price')
-        serializer = self.get_serializer(data=list(data), many=True)
+        data = services.get_services_cost(qs)
+        serializer = self.get_serializer(data=data, many=True)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

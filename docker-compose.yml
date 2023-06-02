@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  app:
+    restart: always
+    env_file:
+      - .env
+    build: ./
+    volumes:
+      - ./src:/src
+      - static:/src/static
+      - media:/src/media
+    expose:
+      - 8000
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    env_file:
+      - .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  nginx:
+    build: ./nginx/
+    depends_on:
+      - app
+    ports:
+      - "8000:80"
+    volumes:
+      - static:/src/static
+      - media:/src/media
+
+volumes:
+  pg_data:
+  static:
+  media:

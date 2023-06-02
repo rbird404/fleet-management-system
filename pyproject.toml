@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "diplom"
+version = "0.1.0"
+description = ""
+authors = ["Timur"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.2"
+djangorestframework = "^3.14.0"
+psycopg2-binary = "^2.9.6"
+flake8 = "^6.0.0"
+drf-yasg = "^1.21.5"
+django-filter = "^23.1"
+djoser = "^2.2.0"
+djangorestframework-simplejwt = "^5.2.2"
+social-auth-app-django = "^5.2.0"
+Pillow = "^9.5.0"
+gunicorn = "^20.1.0"
+django-environ = "^0.10.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
